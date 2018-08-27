@@ -3,8 +3,10 @@ const fs = require('fs')
 const tempfile = require('tempfile')
 const ClosureCompiler = require('google-closure-compiler').compiler
 const rollupPluginJson = require('rollup-plugin-json')
+const rollupPluginReplace = require('rollup-plugin-replace')
 const JSZip = require('jszip')
 const minifyHtml = require('html-minifier').minify
+const { getDefinitions } = require('./buildUtils')
 
 function asyncCompile (compiler) {
   return new Promise(resolve => compiler.run((...args) => resolve(args)))
@@ -41,6 +43,9 @@ const closureCompilerPlugin = {
 
 const plugins = [
   rollupPluginJson(),
+  rollupPluginReplace({
+    values: getDefinitions()
+  }),
   closureCompilerPlugin
 ]
 
@@ -58,8 +63,6 @@ async function build() {
   const { code, map } = await bundle.generate(outputOptions)
 
   const zip = new JSZip()
-  const assets = fs.readdirSync('assets')
-  console.log('Assets:', assets)
   zip.file('build.js', code)
 
   const minifiedHtml = minifyHtml(
@@ -72,10 +75,6 @@ async function build() {
   )
 
   zip.file('index.html', minifiedHtml)
-  for (let assetName of assets) {
-    assetName = 'assets/' + assetName
-    zip.file(assetName, fs.readFileSync(assetName))
-  }
   const content = await zip.generateAsync({
     type:'nodebuffer',
     compression: 'DEFLATE',

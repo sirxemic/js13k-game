@@ -22,7 +22,7 @@ function addSprite (sprite) {
 }
 
 export let PLAYER_SPRITE = addSprite({
-  name: 'player.gif',
+  dataUrl: __assets_player_gif__,
   frames: [
     { x: 1, y: 0, w: 8, h: 13, oX: 4, oY: 13 },
     { x: 10, y: 0, w: 9, h: 13, oX: 5, oY: 13 },
@@ -35,26 +35,26 @@ export let PLAYER_SPRITE = addSprite({
 })
 
 export let WING_SPRITE = addSprite({
-  name: 'wing.gif',
+  dataUrl: __assets_wing_gif__,
   frames: [
     { x: 0, y: 0, w: 12, h: 10, oX: 11, oY: 9 }
   ]
 })
 
 export let PARTICLES_SPRITE = addSprite({
-  name: 'particles.gif',
+  dataUrl: __assets_particles_gif__,
   frames: makeFramesFromTiles(32, 3, 4, 3)
 })
 
 export let FONT = addSprite({
-  name: 'font.gif',
+  dataUrl: __assets_font_gif__,
   frames: [
     { x: 0, y: 0, w: 77, h: 11, oX: 0, oY: 0 }
   ]
 })
 
 export let FLOWERS = addSprite({
-  name: 'flowers.gif',
+  dataUrl: __assets_flowers_gif__,
   frames: [
     { x: 0, y: 0, w: 13, h: 13, oX: 11, oY: 11 },
     { x: 14, y: 0, w: 13, h: 9, oX: 7, oY: 1 },

@@ -40,12 +40,11 @@ export async function loadAssets () {
   await Promise.all(allSprites.map((spriteObject) => {
     return new Promise((resolve, reject) => {
       const img = new Image()
-      img.src = 'assets/' + spriteObject.name
       img.onload = () => {
         spriteObject.image = img
         resolve()
       }
-      img.onerror = reject
+      img.src = spriteObject.dataUrl
     })
   }))
 
