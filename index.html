@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+        background: #222;
+      }
+      body, .overlay {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+        color: #eee;
+        background: #222;
+        font-family: sans-serif;
+      }
+      .overlay {
+        position: fixed;
+        display: none;
+      }
+      body.loading .overlay {
+        display: flex;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body class="loading">
+    <canvas width="1920" height="1080"></canvas>
+    <div class="overlay"><div class="progress"></div></div>
+    <script src="build.js"></script>
+  </body>
+</html>
