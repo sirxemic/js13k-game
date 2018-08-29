@@ -1,5 +1,7 @@
 import { TheRenderer } from '../../Renderer'
 import { EditorEntity } from './EditorEntity'
+import { drawText } from '../../fontUtils'
+import { TheGraphics } from '../../Graphics';
 
 export class EditorText extends EditorEntity {
   constructor (x, y, text) {
@@ -15,6 +17,6 @@ export class EditorText extends EditorEntity {
   }
 
   render () {
-    TheRenderer.drawText(this.text, this.x * 8, this.y * 8)
+    drawText(TheGraphics, this.text, this.x * 8, this.y * 8)
   }
 }

@@ -1,6 +1,5 @@
 import { TheCamera } from './globals'
 import { TheCanvas, TheGraphics } from './Graphics'
-import { FONT } from './Assets/sprites'
 
 let drawCalls = 0
 export function resetDrawCallCount () {
@@ -77,22 +76,6 @@ export const TheRenderer = {
         frame.h
       )
     })
-  },
-
-  drawText (text, x, y) {
-    let x0 = x
-    for (let i = 0; i < text.length; i++) {
-      if (text[i] === ' ') {
-        x += 6
-      } else if (text[i].match(/\n|#/)) {
-        x = x0
-        y += 6
-      } else {
-        let index = text.charCodeAt(i) - 65
-        TheRenderer.drawImage(FONT.image, index * 6, 0, 5, 5, x, y, 5, 5)
-        x += 6
-      }
-    }
   },
 
   drawAt (x, y, callback) {

@@ -21,8 +21,7 @@ export class Camera {
     this.shakeTime = 0
 
     this.scale = 2
-    this.scaleTarget = 4
-    this.scaleSpeed = 0.01
+    this.introZoomFactor = 1
   }
 
   step () {
@@ -80,7 +79,8 @@ export class Camera {
   }
 
   updateZoom () {
-    this.scale += (this.scaleTarget - this.scale) * this.scaleSpeed
+    this.introZoomFactor = approach(this.introZoomFactor, 0, deltaTime / 4)
+    this.scale = 4 - 2 * this.introZoomFactor * this.introZoomFactor
   }
 
   addShake (amount) {

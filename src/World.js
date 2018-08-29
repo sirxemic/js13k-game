@@ -33,6 +33,12 @@ export class World {
         await entity.initialize()
       }
     }
+
+    for (let entity of this.textEntities) {
+      if (entity.initialize) {
+        await entity.initialize()
+      }
+    }
   }
 
   updateDimensions () {
