@@ -2,6 +2,7 @@ import { TILE_SIZE, COLOR_FG_LAYER } from '../constants'
 import { ThePlayer, TheWorld } from '../globals'
 import { overlapping, hexColorWithAlpha, generateImage, forRectangularRegion } from '../utils'
 import { TheRenderer } from '../Renderer'
+import { GridEntity } from './GridEntity'
 
 let imageCache = {}
 async function getImage (width, height) {
@@ -18,17 +19,15 @@ async function getImage (width, height) {
   return imageCache[key]
 }
 
-export class MovingPlatform {
+export class MovingPlatform extends GridEntity {
   constructor (x, y, width, height, direction) {
-    this.x = x * TILE_SIZE
-    this.y = y * TILE_SIZE
-    this.width = width * TILE_SIZE
-    this.height = height * TILE_SIZE
+    super(x, y, width, height)
+
     this.direction = direction
     this.collidable = true
   }
 
-  async prerender () {
+  async initialize () {
     this.image = await getImage(this.width, this.height)
   }
 
@@ -46,7 +45,7 @@ export class MovingPlatform {
         ThePlayer.move(this.direction, 0)
       } else {
         const overlappingPlayer = overlapping(
-          ThePlayer.getBoundingBox(),
+          ThePlayer.boundingBox,
           this
         )
         if (overlappingPlayer) {

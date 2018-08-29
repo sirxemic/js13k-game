@@ -5,7 +5,8 @@ import {
   ENTITY_SERIALIZE_ID_PLAYER_START,
   ENTITY_SERIALIZE_ID_MOVING_PLATFORM,
   ENTITY_SERIALIZE_ID_GOAL,
-  ENTITY_SERIALIZE_ID_TEXT
+  ENTITY_SERIALIZE_ID_TEXT,
+  ENTITY_SERIALIZE_ID_CHECKPOINT
 } from '../constants'
 
 import { makeRectangleCollection } from './SerializerUtils'
@@ -16,6 +17,7 @@ import { PlayerStart } from './Entities/PlayerStart'
 import { EditorMovingPlatform } from './Entities/EditorMovingPlatform'
 import { EditorGoal } from './Entities/EditorGoal'
 import { EditorText } from './Entities/EditorText'
+import { EditorCheckpoint } from './Entities/EditorCheckpoint';
 
 export class LevelSerializer {
   constructor () {}
@@ -52,6 +54,9 @@ export class LevelSerializer {
       }
       if (entity instanceof EditorText) {
         entities.push([ENTITY_SERIALIZE_ID_TEXT, x, y, entity.text])
+      }
+      if (entity instanceof EditorCheckpoint) {
+        entities.push([ENTITY_SERIALIZE_ID_CHECKPOINT, x, y])
       }
     })
 

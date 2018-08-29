@@ -7,6 +7,7 @@ import { EditorHurtTile } from './Entities/EditorHurtTile'
 import { EditorMovingPlatform } from './Entities/EditorMovingPlatform'
 import { EditorGoal } from './Entities/EditorGoal'
 import { EditorText } from './Entities/EditorText'
+import { EditorCheckpoint } from './Entities/EditorCheckpoint'
 
 import { Player } from '../Entities/Player'
 import { SolidTile } from '../Entities/SolidTile'
@@ -14,6 +15,7 @@ import { HurtTile } from '../Entities/HurtTile'
 import { MovingPlatform } from '../Entities/MovingPlatform'
 import { Goal } from '../Entities/Goal'
 import { InfoText } from '../Entities/InfoText'
+import { Checkpoint } from '../Entities/Checkpoint'
 
 export class LevelLoaderEditorPlayable extends LevelLoaderBase {
   constructor (editorWorld) {
@@ -34,7 +36,7 @@ export class LevelLoaderEditorPlayable extends LevelLoaderBase {
       let x = entity.x - minX
       let y = entity.y - minY
       if (entity instanceof PlayerStart) {
-        TheWorld.setPlayer(new Player(x * 8 + 4, y * 8 + 8))
+        TheWorld.setPlayer(new Player(x, y))
       }
       if (entity instanceof EditorSolidTile) {
         TheWorld.addTile(new SolidTile(x, y))
@@ -50,6 +52,9 @@ export class LevelLoaderEditorPlayable extends LevelLoaderBase {
       }
       if (entity instanceof EditorText) {
         TheWorld.addTextEntity(new InfoText(x, y, entity.text))
+      }
+      if (entity instanceof EditorCheckpoint) {
+        TheWorld.addEntity(new Checkpoint(x, y))
       }
     })
     TheWorld.updateDimensions()

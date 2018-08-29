@@ -17,7 +17,8 @@ import {
   ENTITY_SERIALIZE_ID_PLAYER_START,
   ENTITY_SERIALIZE_ID_MOVING_PLATFORM,
   ENTITY_SERIALIZE_ID_GOAL,
-  ENTITY_SERIALIZE_ID_TEXT
+  ENTITY_SERIALIZE_ID_TEXT,
+  ENTITY_SERIALIZE_ID_CHECKPOINT
 } from '../constants'
 import { LevelLoaderEditorPlayable } from './LevelLoaderEditorPlayable'
 import { LevelSerializer } from './LevelSerializer'
@@ -26,6 +27,7 @@ import { EditorText } from './Entities/EditorText'
 
 import { levels } from '../Assets/levels'
 import { forRectangularRegion } from '../utils'
+import { EditorCheckpoint } from './Entities/EditorCheckpoint'
 
 const DRAW_SOLID = 1
 const DRAW_DEATH = 2
@@ -33,6 +35,7 @@ const DRAW_PLAYER = 3
 const DRAW_MOVING_PLATFORM = 4
 const DRAW_GOAL = 5
 const DRAW_TEXT = 6
+const DRAW_CHECKPOINT = 7
 
 function copyToClipboard (str) {
   const el = document.createElement('textarea')
@@ -94,6 +97,9 @@ export class EditorController {
           break
         case ENTITY_SERIALIZE_ID_TEXT:
           TheWorld.addEntity(new EditorText(entity[1], entity[2], entity[3]))
+          break
+        case ENTITY_SERIALIZE_ID_CHECKPOINT:
+          TheWorld.addEntity(new EditorCheckpoint(entity[1], entity[2]))
           break
       }
     })
@@ -169,6 +175,10 @@ export class EditorController {
     TheWorld.addEntity(new EditorMovingPlatform(x0, y0, x1 - x0 + 1, y1 - y0 + 1, 1))
   }
 
+  addCheckpoint (x, y) {
+    TheWorld.addEntity(new EditorCheckpoint(x, y))
+  }
+
   handleKeyDown (event) {
     switch (event.key) {
       case '1':
@@ -188,6 +198,9 @@ export class EditorController {
         break
       case '6':
         this.mode = DRAW_TEXT
+        break
+      case '7':
+        this.mode = DRAW_CHECKPOINT
         break
       case 'c':
         if (event.ctrlKey) {
@@ -229,6 +242,9 @@ export class EditorController {
         case DRAW_TEXT:
           this.currentBrush = new LineBrush(this.drawInfoText.bind(this))
           break
+        case DRAW_CHECKPOINT:
+          this.currentBrush = new LineBrush(this.addCheckpoint.bind(this))
+          break
       }
     }
     this.currentBrush.start(event.tileX, event.tileY)
@@ -269,6 +285,7 @@ export class EditorController {
       [DRAW_GOAL]: 'goal',
       [DRAW_MOVING_PLATFORM]: 'moving platform',
       [DRAW_TEXT]: 'text',
+      [DRAW_CHECKPOINT]: 'checkpoint',
     }[this.mode]
     let text = 'Current mode: ' + mode
     TheGraphics.font = '32px sans-serif'

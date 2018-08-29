@@ -50,7 +50,7 @@ export class Camera {
   }
 
   updateTarget () {
-    let playerCenterY = ThePlayer.getBoundingBox().centerY
+    let playerCenterY = ThePlayer.boundingBox.centerY
 
     let zone1 = this.getHeight() / 10
     let zone2 = this.getHeight() / 6

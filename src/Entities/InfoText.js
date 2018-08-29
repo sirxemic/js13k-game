@@ -1,15 +1,10 @@
-import { TILE_SIZE } from '../constants'
 import { TheRenderer } from '../Renderer'
+import { GridEntity } from './GridEntity'
 
-export class InfoText {
+export class InfoText extends GridEntity {
   constructor (x, y, text) {
-    this.x = x * TILE_SIZE
-    this.y = y * TILE_SIZE
+    super(x, y)
     this.text = text
-  }
-
-  step () {
-
   }
 
   render () {

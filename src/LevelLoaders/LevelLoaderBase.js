@@ -9,6 +9,6 @@ export class LevelLoaderBase {
 
     this.generate()
 
-    await TheWorld.initRenderers()
+    await TheWorld.initEntities()
   }
 }

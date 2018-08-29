@@ -26,7 +26,8 @@ import {
   JUMP_FIRST_PHASE_GRAVITY,
   DEFAULT_GRAVITY,
   DASH_FLOATING_DURATION,
-  TAG_IS_DEATH
+  TAG_IS_DEATH,
+  TILE_SIZE
 } from '../constants'
 
 import { approach, sign, hasTag } from '../utils'
@@ -39,6 +40,7 @@ import { DeathAnimation } from './Player/DeathAnimation'
 import { Particle } from './Particle'
 import { FinishAnimation } from './FinishAnimation'
 import { Flash } from './Flash'
+import { GridEntity } from './GridEntity'
 
 class InputTimer {
   constructor () {
@@ -203,8 +205,8 @@ class WalkingDashingFSM extends FSM {
               if (frame % 2 === 0) {
                 TheWorld.addEntity(
                   new Particle(
-                    player.x - player.bboxOffsetX + Math.random() * player.bboxWidth,
-                    player.y - player.bboxOffsetY + Math.random() * player.bboxHeight
+                    player.boundingBox.x + Math.random() * player.bboxWidth,
+                    player.boundingBox.y + Math.random() * player.bboxHeight
                   )
                 )
               }
@@ -291,17 +293,25 @@ class WalkingDashingFSM extends FSM {
   }
 }
 
-export class Player {
+export class Player extends GridEntity {
   constructor (x, y) {
-    this.x = x
-    this.y = y
-    this.facing = 1
-    this.xSpeed = 0
-    this.ySpeed = 0
+    super(x, y)
+
+    this.startX = x
+    this.startY = y
+
+    this.x += TILE_SIZE / 2
+    this.y += TILE_SIZE
+
     this.bboxOffsetX = 3
     this.bboxOffsetY = 8
     this.bboxWidth = 6
     this.bboxHeight = 8
+
+    this.facing = 1
+    this.xSpeed = 0
+    this.ySpeed = 0
+
     this.grounded = false
     this.jumpTimer = 0
 
@@ -641,7 +651,7 @@ export class Player {
     )
   }
 
-  getBoundingBox () {
+  get boundingBox () {
     return {
       x: this.x - this.bboxOffsetX,
       y: this.y - this.bboxOffsetY,
@@ -685,7 +695,7 @@ export class Player {
     }
 
     this.isAlive = false
-    this.deathAnimation = new DeathAnimation(this.x, this.getBoundingBox().centerY)
+    this.deathAnimation = new DeathAnimation(this.x, this.boundingBox.centerY)
     this.detachWings()
   }
 

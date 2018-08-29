@@ -51,7 +51,7 @@ export class LevelLoaderDefault extends LevelLoaderBase {
     entities.forEach(entity => {
       switch (entity[0]) {
         case ENTITY_SERIALIZE_ID_PLAYER_START:
-          TheWorld.setPlayer(new Player(entity[1] * 8 + 4, entity[2] * 8 + 8))
+          TheWorld.setPlayer(new Player(entity[1], entity[2]))
           break
         case ENTITY_SERIALIZE_ID_MOVING_PLATFORM:
           TheWorld.addSolidEntity(new MovingPlatform(entity[1], entity[2], entity[3], entity[4], entity[5]))

@@ -24,13 +24,13 @@ export class World {
     this.addGuiEntity(new Fade('#fff', 1))
   }
 
-  async initRenderers () {
+  async initEntities () {
     await this.bgRenderer.prerender()
     await this.tileRenderer.prerender()
 
     for (let entity of this.entities) {
-      if (entity.prerender) {
-        await entity.prerender()
+      if (entity.initialize) {
+        await entity.initialize()
       }
     }
   }
@@ -46,12 +46,13 @@ export class World {
 
   setPlayer (player) {
     setThePlayer(player)
-    this.playerStartX = player.x
-    this.playerStartY = player.y
+
+    this.playerSpawnX = player.startX
+    this.playerSpawnY = player.startY
   }
 
   respawnPlayer () {
-    setThePlayer(new Player(this.playerStartX, this.playerStartY))
+    setThePlayer(new Player(this.playerSpawnX, this.playerSpawnY))
   }
 
   /**

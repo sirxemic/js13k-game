@@ -3,6 +3,7 @@ import { ThePlayer, deltaTime } from '../globals'
 import { TheGraphics } from '../Graphics'
 import { TheRenderer } from '../Renderer'
 import { approach, distanceSquared } from '../utils'
+import { GridEntity } from './GridEntity'
 
 let index = 0
 let colors = ['#f00', '#fff', '#0f0', '#00f', '#0ff', '#ff0', '#f0f']
@@ -49,10 +50,9 @@ class Point {
 
 const NUM_POINTS = 20
 
-export class Goal {
+export class Goal extends GridEntity {
   constructor (x, y) {
-    this.x = x * TILE_SIZE
-    this.y = y * TILE_SIZE
+    super(x, y)
 
     this.points = []
     for (let i = 0; i < NUM_POINTS; i++) {
@@ -66,7 +66,7 @@ export class Goal {
   }
 
   step () {
-    let bbox = ThePlayer.getBoundingBox()
+    let bbox = ThePlayer.boundingBox
     let playerX = bbox.centerX
     let playerY = bbox.centerY
     let centerX = this.x + TILE_SIZE / 2
