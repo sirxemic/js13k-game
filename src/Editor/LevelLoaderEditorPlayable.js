@@ -16,6 +16,8 @@ import { MovingPlatform } from '../Entities/MovingPlatform'
 import { Goal } from '../Entities/Goal'
 import { InfoText } from '../Entities/InfoText'
 import { Checkpoint } from '../Entities/Checkpoint'
+import { BACKGROUND_LAYER, FOREGROUND_LAYER } from '../constants'
+import { MainTitle } from '../Entities/MainTitle'
 
 export class LevelLoaderEditorPlayable extends LevelLoaderBase {
   constructor (editorWorld) {
@@ -51,12 +53,15 @@ export class LevelLoaderEditorPlayable extends LevelLoaderBase {
         TheWorld.addEntity(new Goal(x, y))
       }
       if (entity instanceof EditorText) {
-        TheWorld.addTextEntity(new InfoText(x, y, entity.text))
+        TheWorld.addEntity(new InfoText(x, y, entity.text), BACKGROUND_LAYER)
       }
       if (entity instanceof EditorCheckpoint) {
         TheWorld.addEntity(new Checkpoint(x, y))
       }
     })
+
+    TheWorld.addEntity(new MainTitle(), FOREGROUND_LAYER)
+
     TheWorld.updateDimensions()
   }
 }

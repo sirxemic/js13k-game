@@ -1,3 +1,5 @@
+export const GAME_TITLE = 'OFFLINE PARADISE'
+
 export const TILE_SIZE = 8
 
 export const TAG_IS_SOLID = 1
@@ -40,6 +42,11 @@ export const JUMP_FIRST_PHASE_GRAVITY = 160
 export const DEFAULT_GRAVITY = 720
 
 export const MAX_FALLING_SPEED = 320
+
+// World stuff
+export const BACKGROUND_LAYER = 120
+export const MAIN_LAYER = 100
+export const FOREGROUND_LAYER = 50
 
 // Serialization
 export const ENTITY_SERIALIZE_ID_SOLID_TILE = 1

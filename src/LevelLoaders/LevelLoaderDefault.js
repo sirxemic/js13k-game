@@ -1,11 +1,15 @@
-import { TheWorld } from '../globals'
+import { TheWorld, ThePlayer } from '../globals'
 import {
   ENTITY_SERIALIZE_ID_SOLID_TILE,
   ENTITY_SERIALIZE_ID_HURT_TILE,
   ENTITY_SERIALIZE_ID_PLAYER_START,
   ENTITY_SERIALIZE_ID_MOVING_PLATFORM,
   ENTITY_SERIALIZE_ID_GOAL,
-  ENTITY_SERIALIZE_ID_TEXT
+  ENTITY_SERIALIZE_ID_TEXT,
+  GAME_TITLE,
+  FOREGROUND_LAYER,
+  BACKGROUND_LAYER,
+  ENTITY_SERIALIZE_ID_CHECKPOINT
 } from '../constants'
 import { forRectangularRegion } from '../utils'
 
@@ -20,6 +24,8 @@ import { InfoText } from '../Entities/InfoText'
 import { FinishAnimation } from '../Entities/FinishAnimation'
 
 import { levels } from '../Assets/levels'
+import { MainTitle } from '../Entities/MainTitle';
+import { Checkpoint } from '../Entities/Checkpoint';
 
 export class LevelLoaderDefault extends LevelLoaderBase {
   constructor (levelNumber) {
@@ -60,10 +66,17 @@ export class LevelLoaderDefault extends LevelLoaderBase {
           TheWorld.addEntity(new Goal(entity[1], entity[2]))
           break
         case ENTITY_SERIALIZE_ID_TEXT:
-          TheWorld.addTextEntity(new InfoText(entity[1], entity[2], entity[3]))
+          TheWorld.addEntity(new InfoText(entity[1], entity[2], entity[3]), BACKGROUND_LAYER)
+          break
+        case ENTITY_SERIALIZE_ID_CHECKPOINT:
+          TheWorld.addEntity(new Checkpoint(entity[1], entity[2]))
           break
       }
     })
+
+    if (this.levelNumber === 0) {
+      TheWorld.addEntity(new MainTitle(), FOREGROUND_LAYER)
+    }
 
     TheWorld.updateDimensions()
   }

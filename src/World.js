@@ -1,4 +1,4 @@
-import { TAG_IS_SOLID, TAG_IS_DEATH, TAG_IS_COLLECTIBLE } from './constants'
+import { TAG_IS_SOLID, TAG_IS_DEATH, TAG_IS_COLLECTIBLE, BACKGROUND_LAYER, MAIN_LAYER, FOREGROUND_LAYER } from './constants'
 import { ThePlayer, setThePlayer, TheCamera } from './globals'
 import { overlapping, getCellX, getCellY } from './utils'
 
@@ -15,9 +15,17 @@ export class World {
   constructor () {
     this.tiles = new Tileset()
     this.solidEntities = new Set()
+
+    this.layers = {
+      [BACKGROUND_LAYER]: new Set(),
+      [MAIN_LAYER]: new Set(),
+      [FOREGROUND_LAYER]: new Set()
+    }
+
     this.guiEntities = new Set()
-    this.textEntities = new Set()
+
     this.entities = new Set()
+
     this.tileRenderer = new TileRenderer(this.tiles)
     this.bgRenderer = new BackgroundRenderer()
 
@@ -29,12 +37,6 @@ export class World {
     await this.tileRenderer.prerender()
 
     for (let entity of this.entities) {
-      if (entity.initialize) {
-        await entity.initialize()
-      }
-    }
-
-    for (let entity of this.textEntities) {
       if (entity.initialize) {
         await entity.initialize()
       }
@@ -64,12 +66,15 @@ export class World {
   /**
    * Entities
    */
-  addEntity (entity) {
+  addEntity (entity, layer = MAIN_LAYER) {
+    this.layers[layer].add(entity)
     this.entities.add(entity)
+    entity.__layer = layer
   }
 
   removeEntity (entity) {
     this.entities.delete(entity)
+    this.layers[entity.__layer].delete(entity)
   }
 
   /**
@@ -101,17 +106,6 @@ export class World {
 
   removeGuiEntity (entity) {
     this.guiEntities.delete(entity)
-  }
-
-  /**
-   * Text
-   */
-  addTextEntity (entity) {
-    this.textEntities.add(entity)
-  }
-
-  removeTextEntity (entity) {
-    this.textEntities.delete(entity)
   }
 
   /**
@@ -192,26 +186,32 @@ export class World {
   render () {
     TheRenderer.clear()
 
-    // Background
     this.bgRenderer.render()
 
-    // Text layer
-    TheRenderer.updateViewMatrix(120)
+    // Background layer
+    TheRenderer.updateViewMatrix(BACKGROUND_LAYER)
 
-    for (let entity of this.textEntities) {
+    for (let entity of this.layers[BACKGROUND_LAYER]) {
       entity.render()
     }
 
     // Main layer
-    TheRenderer.updateViewMatrix(100)
+    TheRenderer.updateViewMatrix(MAIN_LAYER)
 
     this.tileRenderer.render()
 
-    for (let entity of this.entities) {
+    for (let entity of this.layers[MAIN_LAYER]) {
       entity.render()
     }
 
     ThePlayer && ThePlayer.render()
+
+    // Foreground layer
+    TheRenderer.updateViewMatrix(FOREGROUND_LAYER)
+
+    for (let entity of this.layers[FOREGROUND_LAYER]) {
+      entity.render()
+    }
 
     // Foreground / UI effects
     TheGraphics.setTransform(1, 0, 0, 1, 0, 0)
