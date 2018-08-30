@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const { getDefinitions } = require('./buildUtils')
 
 module.exports = {
   entry: {
@@ -10,7 +9,12 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'build.js'
   },
-  plugins: [
-    new webpack.DefinePlugin(getDefinitions())
-  ]
+  module: {
+    rules: [
+      {
+        test: /\.gif$/,
+        use: [{ loader: 'url-loader' }]
+      }
+    ]
+  }
 }

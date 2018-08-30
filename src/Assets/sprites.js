@@ -1,3 +1,9 @@
+import PlayerGif from '../../assets/player.gif'
+import WingGif from '../../assets/wing.gif'
+import ParticlesGif from '../../assets/particles.gif'
+import FontGif from '../../assets/font.gif'
+import FlowersGif from '../../assets/flowers.gif'
+
 function makeFramesFromTiles(width, height, tileWidth, tileHeight) {
   let frames = []
   for (let y = 0; y < height; y += tileHeight) {
@@ -22,7 +28,7 @@ function addSprite (sprite) {
 }
 
 export let PLAYER_SPRITE = addSprite({
-  dataUrl: __assets_player_gif__,
+  dataUrl: PlayerGif,
   frames: [
     { x: 1, y: 0, w: 8, h: 13, oX: 4, oY: 13 },
     { x: 10, y: 0, w: 9, h: 13, oX: 5, oY: 13 },
@@ -35,26 +41,26 @@ export let PLAYER_SPRITE = addSprite({
 })
 
 export let WING_SPRITE = addSprite({
-  dataUrl: __assets_wing_gif__,
+  dataUrl: WingGif,
   frames: [
     { x: 0, y: 0, w: 12, h: 10, oX: 11, oY: 9 }
   ]
 })
 
 export let PARTICLES_SPRITE = addSprite({
-  dataUrl: __assets_particles_gif__,
+  dataUrl: ParticlesGif,
   frames: makeFramesFromTiles(32, 3, 4, 3)
 })
 
 export let FONT = addSprite({
-  dataUrl: __assets_font_gif__,
+  dataUrl: FontGif,
   frames: [
     { x: 0, y: 0, w: 77, h: 11, oX: 0, oY: 0 }
   ]
 })
 
 export let FLOWERS = addSprite({
-  dataUrl: __assets_flowers_gif__,
+  dataUrl: FlowersGif,
   frames: [
     { x: 0, y: 0, w: 13, h: 13, oX: 11, oY: 11 },
     { x: 14, y: 0, w: 13, h: 9, oX: 7, oY: 1 },
