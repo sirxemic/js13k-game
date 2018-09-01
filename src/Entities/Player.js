@@ -316,6 +316,7 @@ export class Player extends GridEntity {
 
     this.isAlive = true
     this.finishedLevel = false
+    this.slowDownFactor = 0.5
 
     this.xRemainder = 0
     this.yRemainder = 0
@@ -350,9 +351,9 @@ export class Player extends GridEntity {
 
     if (this.finishedLevel) {
       this.wings.step()
-      this.xSpeed *= 0.5
-      this.ySpeed *= 0.5
-      this.move(this.xSpeed * deltaTime, this.ySpeed * deltaTime)
+      this.slowDownFactor = approach(this.slowDownFactor, deltaTime, deltaTime)
+      let multiplier = deltaTime * this.slowDownFactor
+      this.move(this.xSpeed * multiplier, this.ySpeed * multiplier)
       return
     }
 

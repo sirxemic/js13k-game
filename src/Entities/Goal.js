@@ -49,6 +49,7 @@ class Point {
 }
 
 const NUM_POINTS = 20
+const GOAL_RADIUS = TILE_SIZE * 2
 
 export class Goal extends GridEntity {
   constructor (x, y) {
@@ -72,7 +73,7 @@ export class Goal extends GridEntity {
     let centerX = this.x + TILE_SIZE / 2
     let centerY = this.y + TILE_SIZE / 2
 
-    if (distanceSquared(centerX, centerY, playerX, playerY) < TILE_SIZE * TILE_SIZE && (ThePlayer.isDashing() || ThePlayer.ySpeed > 240)) {
+    if (distanceSquared(centerX, centerY, playerX, playerY) < GOAL_RADIUS * GOAL_RADIUS && (ThePlayer.isDashing() || ThePlayer.ySpeed > 240)) {
       ThePlayer.setFinished()
     }
 
