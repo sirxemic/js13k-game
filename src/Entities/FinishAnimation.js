@@ -1,7 +1,7 @@
 import { TheSceneManager, ThePlayer, TheWorld } from '../globals'
 import { TheGraphics } from '../Graphics'
 import { TheRenderer } from '../Renderer'
-import { FLOWERS } from '../Assets/sprites'
+import { FlowersSprite } from '../Assets'
 import { Fade} from './Fade'
 
 let indexCounter = 0
@@ -10,22 +10,25 @@ class Flower {
     this.x = x
     this.y = y
     this.alpha = 0
-    this.index = (indexCounter++) % FLOWERS.frames.length
+    this.index = (indexCounter++) % FlowersSprite.frames.length
   }
 
   render () {
     TheGraphics.globalAlpha = this.alpha
     this.alpha += 0.1
-    TheRenderer.drawSprite(FLOWERS, this.x, this.y, this.index)
+    TheRenderer.drawSprite(FlowersSprite, this.x, this.y, this.index)
   }
 }
 
 let fibonacci = [1,2,3,5,8]
 
 export class FinishAnimation {
-  constructor () {
+  constructor (isFinalLevel) {
+    this.isFinalLevel = isFinalLevel
+    this.centerX = ThePlayer.x
+    this.centerY = ThePlayer.y - 6
     this.timer = 0
-    this.flowers = []
+    this.FlowersSprite = []
     this.scanners = []
 
     for (let i = 0; i < 5; i++) {
@@ -36,7 +39,7 @@ export class FinishAnimation {
   step () {
     this.timer++
 
-    if (!TheWorld.isFinalLevel) {
+    if (!this.isFinalLevel) {
       if (this.timer == 60) {
         TheWorld.addGuiEntity(new Fade('#fff', 0))
       }
@@ -55,17 +58,17 @@ export class FinishAnimation {
         let y = ThePlayer.y + Math.sin(scanner.a) * scanner.r
 
         if (TheWorld.solidAt(x - 2, y - 2, 4, 4)) {
-          this.flowers.push(new Flower(x, y))
+          this.FlowersSprite.push(new Flower(x, y))
         }
       }
     }
   }
 
   render () {
-    this.flowers.forEach(flower => flower.render())
+    this.FlowersSprite.forEach(flower => flower.render())
     TheGraphics.globalAlpha = 1
     TheGraphics.lineWidth = 1
-    TheRenderer.drawCircle(null, '#fff', ThePlayer.x, ThePlayer.y - 6, Math.pow(this.timer, 1.125))
-    TheRenderer.drawCircle(null, '#fff', ThePlayer.x, ThePlayer.y - 6, Math.pow(this.timer, 1.25))
+    TheRenderer.drawCircle(null, '#fff', this.centerX, this.centerY, Math.pow(this.timer, 1.125))
+    TheRenderer.drawCircle(null, '#fff', this.centerX, this.centerY, Math.pow(this.timer, 1.25))
   }
 }

@@ -97,17 +97,10 @@ export function hexColorWithAlpha (hexColor, alpha) {
 }
 
 /**
- * Utilities for showing progress
+ * Waiting for the next frame is useful for preventing the browser to hang
+ * while the assets are being generated
  */
-
-export async function showProgress (message) {
-  if (message) {
-    document.querySelector('.progress').textContent = message
-  }
-
-  // By waiting a frame before generating the next asset, the likelihood of the browser saying
-  // a script is hanging will be reduced greatly. We could use web workers, but that adds an additional layer of
-  // complexity and more bytes :)
+export async function waitForNextFrame () {
   await new Promise(resolve => requestAnimationFrame(resolve))
 }
 

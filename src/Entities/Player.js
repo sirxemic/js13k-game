@@ -31,11 +31,10 @@ import {
 } from '../constants'
 
 import { approach, sign, hasTag } from '../utils'
-import { PLAYER_SPRITE } from '../Assets/sprites'
+import { PlayerSprite, DashSound, JumpSound, ImpactSound, RebootSound } from '../Assets'
 import { Wings } from './Player/Wings'
 import { playSample } from '../Audio'
 import { FSM } from '../FSM'
-import { DashSound, JumpSound, ImpactSound, RebootSound } from '../Assets'
 import { DeathAnimation } from './Player/DeathAnimation'
 import { Particle } from './Particle'
 import { FinishAnimation } from './FinishAnimation'
@@ -686,7 +685,7 @@ export class Player extends GridEntity {
       return
     }
 
-    TheRenderer.drawSprite(PLAYER_SPRITE, this.x, this.y, this.spriteIndex, this.facing * this.scaleX, this.scaleY)
+    TheRenderer.drawSprite(PlayerSprite, this.x, this.y, this.spriteIndex, this.facing * this.scaleX, this.scaleY)
   }
 
   die () {

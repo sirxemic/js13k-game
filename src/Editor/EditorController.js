@@ -70,6 +70,8 @@ export class EditorController {
   loadLevel (levelNumber) {
     const { maps, entities } = levels[levelNumber]
 
+    TheWorld.levelNumber = levelNumber
+
     TheWorld.clear()
 
     for (let key in maps) {

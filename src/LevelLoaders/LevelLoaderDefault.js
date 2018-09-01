@@ -39,11 +39,6 @@ export class LevelLoaderDefault extends LevelLoaderBase {
     const maps = levelData['maps']
     const entities = levelData['entities']
 
-    TheWorld.isFinalLevel = this.levelNumber === levels.length - 1
-    if (TheWorld.isFinalLevel) {
-      TheWorld.addEntity(new FinishAnimation())
-    }
-
     for (let key in maps) {
       let entityType = {
         [ENTITY_SERIALIZE_ID_SOLID_TILE]: SolidTile,
@@ -76,6 +71,10 @@ export class LevelLoaderDefault extends LevelLoaderBase {
 
     if (this.levelNumber === 0) {
       TheWorld.addEntity(new MainTitle(), FOREGROUND_LAYER)
+    }
+
+    if (this.levelNumber === levels.length - 1) {
+      TheWorld.addEntity(new FinishAnimation(true))
     }
 
     TheWorld.updateDimensions()

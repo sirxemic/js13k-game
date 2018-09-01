@@ -1,5 +1,5 @@
 import { TheAudioContext, TheAudioDestination, TheReverbDestination } from './Context'
-import { showProgress } from '../utils'
+import { waitForNextFrame } from '../utils'
 
 export function addSoundToBuffer (sourceData, targetData, offset) {
   if (!Array.isArray(sourceData)) {
@@ -84,7 +84,7 @@ export async function createChannel (trackFunction, sampleCount, bpm) {
 
   channel.buffer = buffer
 
-  await showProgress()
+  await waitForNextFrame()
 
   return channel
 }

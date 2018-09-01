@@ -1,6 +1,6 @@
 import { approach, sign } from '../../utils'
 import { DASH_PREPARATION_TIME } from '../../constants'
-import { WING_SPRITE } from '../../Assets/sprites'
+import { WingSprite } from '../../Assets'
 import { deltaTime } from '../../globals'
 import { TheGraphics } from '../../Graphics'
 import { TheRenderer } from '../../Renderer'
@@ -151,7 +151,7 @@ class Wing {
     }
 
     TheGraphics.globalAlpha  = this.opacity
-    TheRenderer.drawSprite(WING_SPRITE, this.x, this.y, 0, this.facing, 1, this.rotation)
+    TheRenderer.drawSprite(WingSprite, this.x, this.y, 0, this.facing, 1, this.rotation)
     TheGraphics.globalAlpha  = 1
   }
 }

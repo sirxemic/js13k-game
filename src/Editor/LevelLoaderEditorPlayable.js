@@ -18,6 +18,8 @@ import { InfoText } from '../Entities/InfoText'
 import { Checkpoint } from '../Entities/Checkpoint'
 import { BACKGROUND_LAYER, FOREGROUND_LAYER } from '../constants'
 import { MainTitle } from '../Entities/MainTitle'
+import { FinishAnimation } from '../Entities/FinishAnimation'
+import { levels } from '../Assets/levels'
 
 export class LevelLoaderEditorPlayable extends LevelLoaderBase {
   constructor (editorWorld) {
@@ -60,7 +62,13 @@ export class LevelLoaderEditorPlayable extends LevelLoaderBase {
       }
     })
 
-    TheWorld.addEntity(new MainTitle(), FOREGROUND_LAYER)
+    if (this.editorWorld.levelNumber === 0) {
+      TheWorld.addEntity(new MainTitle(), FOREGROUND_LAYER)
+    }
+
+    if (this.editorWorld.levelNumber === levels.length - 1) {
+      TheWorld.addEntity(new FinishAnimation(true))
+    }
 
     TheWorld.updateDimensions()
   }
