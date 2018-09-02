@@ -39,9 +39,16 @@ export class MovingPlatform extends GridEntity {
   step () {
     this.collidable = false
 
-    let dx = this.xSpeed * deltaTime
-    let dy = this.ySpeed * deltaTime
+    this.xRemainder += this.xSpeed * deltaTime
+    this.yRemainder += this.ySpeed * deltaTime
 
+    let dx = Math.round(this.xRemainder)
+    let dy = Math.round(this.yRemainder)
+
+    this.xRemainder -= dx
+    this.yRemainder -= dy
+
+    // Bouncing off of things
     let collider = this.collideAt(this.x + dx, this.y + dy)
 
     if (collider) {
@@ -54,27 +61,28 @@ export class MovingPlatform extends GridEntity {
         collider.ySpeed *= -1
       }
 
+      if (this.xSpeed > 0) {
+        dx -= 2 * ((this.x + dx) % TILE_SIZE)
+      } else if (this.xSpeed < 0) {
+        dx -= 2 * ((this.x + dx) % TILE_SIZE - TILE_SIZE)
+      } else if (this.ySpeed > 0) {
+        dy -= 2 * ((this.y + dy) % TILE_SIZE)
+      } else {
+        dy -= 2 * ((this.y + dy) % TILE_SIZE - TILE_SIZE)
+      }
+
       this.xSpeed *= -1
       this.ySpeed *= -1
-
-      dx *= -1
-      dy *= -1
     }
 
-    this.xRemainder += dx
-    this.yRemainder += dy
-
-    dx = Math.round(this.xRemainder)
-    dy = Math.round(this.yRemainder)
-
-    this.xRemainder -= dx
-    this.yRemainder -= dy
+    let playerIsRiding = ThePlayer.isRiding(this)
 
     this.x += dx
     this.y += dy
 
+    // Actually moving the player
     if (ThePlayer.isAlive) {
-      if (ThePlayer.isRiding(this)) {
+      if (playerIsRiding) {
         ThePlayer.move(dx, dy)
       } else {
         const overlappingPlayer = overlapping(

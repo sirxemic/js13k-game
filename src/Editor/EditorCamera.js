@@ -122,8 +122,18 @@ export class EditorCamera extends Camera {
       updatedPosition = true
     }
 
-    this.targetX = clamp(this.targetX, this.minX, this.maxX)
-    this.targetY = clamp(this.targetY, this.minY, this.maxY)
+    if (this.targetX < this.minX) {
+      this.targetX += (this.minX - this.targetX) / 12
+    }
+    if (this.targetY < this.minY) {
+      this.targetY += (this.minY - this.targetY) / 12
+    }
+    if (this.targetX > this.maxX) {
+      this.targetX += (this.maxX - this.targetX) / 12
+    }
+    if (this.targetY > this.maxY) {
+      this.targetY += (this.maxY - this.targetY) / 12
+    }
 
     if (updatedPosition) {
       this.updateDerivedPositions()

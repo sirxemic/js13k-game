@@ -62,7 +62,13 @@ export class LevelSerializer {
 
     for (let key in maps) {
       maps[key] = makeRectangleCollection(width, height, maps[key])
+
+      // Sort lexically for better compression
+      maps[key].sort()
     }
+
+    // Sort lexically for better compression
+    entities.sort()
 
     return JSON.stringify({
       maps,

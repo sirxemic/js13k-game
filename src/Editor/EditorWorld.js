@@ -1,7 +1,8 @@
 import { TheCamera } from '../globals'
-import { TheCanvas } from '../Graphics'
+import { TheCanvas, TheGraphics } from '../Graphics'
 import { TheRenderer } from '../Renderer'
 import { getCellX, getCellY, forRectangularRegion } from '../utils'
+import { TILE_SIZE } from '../constants';
 
 export class EditorWorld {
   constructor () {
@@ -69,7 +70,7 @@ export class EditorWorld {
       entity.y,
       entity.x + entity.width - 1,
       entity.y + entity.height - 1,
-      (xi, yi) => { this.entityGrid[xi + ';' + yi] = null }
+      (xi, yi) => { delete this.entityGrid[xi + ';' + yi] }
     )
 
     this.entities.delete(entity)
@@ -96,6 +97,8 @@ export class EditorWorld {
     let leftIndex = getCellX(TheCamera.viewXToWorldX(0))
     let rightIndex = getCellX(TheCamera.viewXToWorldX(TheCanvas.width - 1))
 
+    this.renderGrid(topIndex, bottomIndex, leftIndex, rightIndex)
+
     forRectangularRegion(leftIndex, topIndex, rightIndex, bottomIndex, (x, y) => {
       let entity = this.entityGrid[x + ';' + y]
       if (entity) {
@@ -104,5 +107,39 @@ export class EditorWorld {
     })
 
     this.controller.render()
+  }
+
+  renderGrid (topIndex, bottomIndex, leftIndex, rightIndex) {
+    TheGraphics.strokeStyle = '#777'
+    TheGraphics.beginPath()
+    for (let xi = leftIndex; xi <= rightIndex; xi++) {
+      if (xi % 8 === 0) {
+        TheGraphics.stroke()
+        TheGraphics.strokeStyle = '#666'
+        TheGraphics.beginPath()
+      }
+      TheGraphics.moveTo(xi * TILE_SIZE, topIndex * TILE_SIZE)
+      TheGraphics.lineTo(xi * TILE_SIZE, (bottomIndex + 1) * TILE_SIZE)
+      if (xi % 8 === 0) {
+        TheGraphics.stroke()
+        TheGraphics.strokeStyle = '#777'
+        TheGraphics.beginPath()
+      }
+    }
+    for (let yi = topIndex; yi <= bottomIndex; yi++) {
+      if (yi % 8 === 0) {
+        TheGraphics.stroke()
+        TheGraphics.strokeStyle = '#666'
+        TheGraphics.beginPath()
+      }
+      TheGraphics.moveTo(leftIndex * TILE_SIZE, yi * TILE_SIZE)
+      TheGraphics.lineTo((rightIndex + 1) * TILE_SIZE, yi * TILE_SIZE)
+      if (yi % 8 === 0) {
+        TheGraphics.stroke()
+        TheGraphics.strokeStyle = '#777'
+        TheGraphics.beginPath()
+      }
+    }
+    TheGraphics.stroke()
   }
 }

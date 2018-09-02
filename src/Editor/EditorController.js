@@ -87,21 +87,22 @@ export class EditorController {
     }
 
     entities.forEach(entity => {
+      let args = entity.slice(1)
       switch (entity[0]) {
         case ENTITY_SERIALIZE_ID_PLAYER_START:
-          this.setPlayerPosition(entity[1], entity[2])
+          this.setPlayerPosition(...args)
           break
         case ENTITY_SERIALIZE_ID_GOAL:
-          TheWorld.addEntity(new EditorGoal(entity[1], entity[2]))
+          TheWorld.addEntity(new EditorGoal(...args))
           break
         case ENTITY_SERIALIZE_ID_MOVING_PLATFORM:
-          TheWorld.addEntity(new EditorMovingPlatform(entity[1], entity[2], entity[3], entity[4], entity[5]))
+          TheWorld.addEntity(new EditorMovingPlatform(...args))
           break
         case ENTITY_SERIALIZE_ID_TEXT:
-          TheWorld.addEntity(new EditorText(entity[1], entity[2], entity[3]))
+          TheWorld.addEntity(new EditorText(...args))
           break
         case ENTITY_SERIALIZE_ID_CHECKPOINT:
-          TheWorld.addEntity(new EditorCheckpoint(entity[1], entity[2]))
+          TheWorld.addEntity(new EditorCheckpoint(...args))
           break
       }
     })
@@ -259,6 +260,14 @@ export class EditorController {
       }
     }
     this.currentBrush.start(event.tileX, event.tileY)
+
+    // No boundaries when drawing
+    TheCamera.setBoundaries({
+      minX: -Infinity,
+      maxX: Infinity,
+      minY: -Infinity,
+      maxY: Infinity
+    })
   }
 
   handleMouseMove (event) {
