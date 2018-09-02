@@ -28,7 +28,7 @@ export class FinishAnimation {
     this.centerX = ThePlayer.x
     this.centerY = ThePlayer.y - 6
     this.timer = 0
-    this.FlowersSprite = []
+    this.flowers = []
     this.scanners = []
 
     for (let i = 0; i < 5; i++) {
@@ -57,15 +57,15 @@ export class FinishAnimation {
         let x = ThePlayer.x + Math.cos(scanner.a) * scanner.r
         let y = ThePlayer.y + Math.sin(scanner.a) * scanner.r
 
-        if (TheWorld.solidAt(x - 2, y - 2, 4, 4)) {
-          this.FlowersSprite.push(new Flower(x, y))
+        if (TheWorld.solidAt(x - 1, y - 1, 2, 2)) {
+          this.flowers.push(new Flower(x, y))
         }
       }
     }
   }
 
   render () {
-    this.FlowersSprite.forEach(flower => flower.render())
+    this.flowers.forEach(flower => flower.render())
     TheGraphics.globalAlpha = 1
     TheGraphics.lineWidth = 1
     TheRenderer.drawCircle(null, '#fff', this.centerX, this.centerY, Math.pow(this.timer, 1.125))

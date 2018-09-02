@@ -92,6 +92,6 @@ document.addEventListener('keyup', ({ keyCode }) => {
 window.addEventListener('gamepadconnected', event => {
   if (!Input.gamepad) {
     // Closure Compiler would rename the property if we don't set it like this
-    window.gamepad = Input.gamepad = event['gamepad']
+    Input.gamepad = event['gamepad']
   }
 })
