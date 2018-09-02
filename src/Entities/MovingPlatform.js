@@ -1,6 +1,6 @@
 import { TILE_SIZE, COLOR_FG_LAYER } from '../constants'
-import { ThePlayer, TheWorld } from '../globals'
-import { overlapping, hexColorWithAlpha, generateImage, forRectangularRegion } from '../utils'
+import { ThePlayer, TheWorld, deltaTime } from '../globals'
+import { overlapping, hexColorWithAlpha, generateImage, forRectangularRegion, sign } from '../utils'
 import { TheRenderer } from '../Renderer'
 import { GridEntity } from './GridEntity'
 
@@ -20,10 +20,15 @@ async function getImage (width, height) {
 }
 
 export class MovingPlatform extends GridEntity {
-  constructor (x, y, width, height, direction) {
+  constructor (x, y, width, height, xSpeed, ySpeed) {
     super(x, y, width, height)
 
-    this.direction = direction
+    this.xSpeed = xSpeed
+    this.ySpeed = ySpeed
+
+    this.xRemainder = 0
+    this.yRemainder = 0
+
     this.collidable = true
   }
 
@@ -34,24 +39,65 @@ export class MovingPlatform extends GridEntity {
   step () {
     this.collidable = false
 
-    if (this.collideAt(this.x + this.direction, this.y)) {
-      this.direction = -this.direction
+    let dx = this.xSpeed * deltaTime
+    let dy = this.ySpeed * deltaTime
+
+    let collider = this.collideAt(this.x + dx, this.y + dy)
+
+    if (collider) {
+      // Check if the other is moving on the same axis
+      if (
+        (this.xSpeed && sign(collider.xSpeed) === -sign(this.xSpeed)) ||
+        (this.ySpeed && sign(collider.ySpeed) === -sign(this.ySpeed))
+      ) {
+        collider.xSpeed *= -1
+        collider.ySpeed *= -1
+      }
+
+      this.xSpeed *= -1
+      this.ySpeed *= -1
+
+      dx *= -1
+      dy *= -1
     }
 
-    this.x += this.direction
+    this.xRemainder += dx
+    this.yRemainder += dy
+
+    dx = Math.round(this.xRemainder)
+    dy = Math.round(this.yRemainder)
+
+    this.xRemainder -= dx
+    this.yRemainder -= dy
+
+    this.x += dx
+    this.y += dy
 
     if (ThePlayer.isAlive) {
       if (ThePlayer.isRiding(this)) {
-        ThePlayer.move(this.direction, 0)
+        ThePlayer.move(dx, dy)
       } else {
         const overlappingPlayer = overlapping(
           ThePlayer.boundingBox,
           this
         )
+
         if (overlappingPlayer) {
-          ThePlayer.moveX(this.direction, () => {
-            ThePlayer.die()
-          })
+          if (dx) {
+            let amount = dx > 0
+              ? this.x + this.width - ThePlayer.boundingBox.x
+              : this.x - ThePlayer.boundingBox.x - ThePlayer.boundingBox.width
+            ThePlayer.moveX(amount, () => {
+              ThePlayer.die()
+            })
+          } else if (dy) {
+            let amount = dy > 0
+              ? this.y + this.height - ThePlayer.boundingBox.y
+              : this.y - ThePlayer.boundingBox.y - ThePlayer.boundingBox.height
+            ThePlayer.moveY(amount, () => {
+              ThePlayer.die()
+            })
+          }
         }
       }
     }

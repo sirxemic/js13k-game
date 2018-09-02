@@ -169,12 +169,21 @@ export class EditorController {
     if (x0 === x1 && y0 === y1) {
       let entity = TheWorld.getEntityAt(x0, y0)
       if (entity instanceof EditorMovingPlatform) {
-        entity.direction *= -1
+        let speedString = prompt('New direction', `${entity.xSpeed},${entity.ySpeed}`)
+        let [newXSpeed, newYSpeed] = speedString.split(',').map(Number)
+
+        // One of those has to be 0
+        if (newXSpeed && newYSpeed) {
+          return
+        }
+
+        entity.xSpeed = newXSpeed
+        entity.ySpeed = newYSpeed
         return
       }
     }
 
-    TheWorld.addEntity(new EditorMovingPlatform(x0, y0, x1 - x0 + 1, y1 - y0 + 1, 1))
+    TheWorld.addEntity(new EditorMovingPlatform(x0, y0, x1 - x0 + 1, y1 - y0 + 1, 60, 0))
   }
 
   addCheckpoint (x, y) {

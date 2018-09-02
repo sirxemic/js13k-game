@@ -50,21 +50,22 @@ export class LevelLoaderDefault extends LevelLoaderBase {
     }
 
     entities.forEach(entity => {
+      const args = entity.slice(1)
       switch (entity[0]) {
         case ENTITY_SERIALIZE_ID_PLAYER_START:
-          TheWorld.setPlayer(new Player(entity[1], entity[2]))
+          TheWorld.setPlayer(new Player(...args))
           break
         case ENTITY_SERIALIZE_ID_MOVING_PLATFORM:
-          TheWorld.addSolidEntity(new MovingPlatform(entity[1], entity[2], entity[3], entity[4], entity[5]))
+          TheWorld.addSolidEntity(new MovingPlatform(...args))
           break
         case ENTITY_SERIALIZE_ID_GOAL:
-          TheWorld.addEntity(new Goal(entity[1], entity[2]))
+          TheWorld.addEntity(new Goal(...args))
           break
         case ENTITY_SERIALIZE_ID_TEXT:
-          TheWorld.addEntity(new InfoText(entity[1], entity[2], entity[3]), BACKGROUND_LAYER)
+          TheWorld.addEntity(new InfoText(...args), BACKGROUND_LAYER)
           break
         case ENTITY_SERIALIZE_ID_CHECKPOINT:
-          TheWorld.addEntity(new Checkpoint(entity[1], entity[2]))
+          TheWorld.addEntity(new Checkpoint(...args))
           break
       }
     })

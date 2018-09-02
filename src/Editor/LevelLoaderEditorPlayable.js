@@ -49,7 +49,7 @@ export class LevelLoaderEditorPlayable extends LevelLoaderBase {
         TheWorld.addTile(new HurtTile(x, y))
       }
       if (entity instanceof EditorMovingPlatform) {
-        TheWorld.addSolidEntity(new MovingPlatform(x, y, entity.width, entity.height, entity.direction))
+        TheWorld.addSolidEntity(new MovingPlatform(x, y, entity.width, entity.height, entity.xSpeed, entity.ySpeed))
       }
       if (entity instanceof EditorGoal) {
         TheWorld.addEntity(new Goal(x, y))

@@ -47,7 +47,7 @@ export class LevelSerializer {
         entities.push([ENTITY_SERIALIZE_ID_PLAYER_START, x, y])
       }
       if (entity instanceof EditorMovingPlatform) {
-        entities.push([ENTITY_SERIALIZE_ID_MOVING_PLATFORM, x, y, entity.width, entity.height, entity.direction])
+        entities.push([ENTITY_SERIALIZE_ID_MOVING_PLATFORM, x, y, entity.width, entity.height, entity.xSpeed, entity.ySpeed])
       }
       if (entity instanceof EditorGoal) {
         entities.push([ENTITY_SERIALIZE_ID_GOAL, x, y])
