@@ -17,9 +17,9 @@ export class TileRenderer {
   }
 
   async prerender () {
-    this.tiles.forEachTile((tile, x, y) => {
-      let chunkX = Math.floor(x / CHUNK_TILE_COUNT)
-      let chunkY = Math.floor(y / CHUNK_TILE_COUNT)
+    this.tiles.forEachTile(tile => {
+      let chunkX = Math.floor(tile.x / CHUNK_TILE_COUNT)
+      let chunkY = Math.floor(tile.y / CHUNK_TILE_COUNT)
       let chunkKey = chunkX + ';' + chunkY
       this.chunks[chunkKey] = this.chunks[chunkKey] || {
         x: chunkX,

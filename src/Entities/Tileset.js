@@ -21,8 +21,7 @@ export class Tileset {
 
   forEachTile (callback) {
     for (let key in this.tiles) {
-      let [x, y] = key.split(';').map(Number)
-      callback(this.tiles[key], x, y)
+      callback(this.tiles[key])
     }
   }
 }

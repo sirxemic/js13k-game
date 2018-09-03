@@ -69,9 +69,7 @@ export function zipRhythmAndNotes (rhythm, notes) {
 }
 
 export function offsetNotes (notes, amount) {
-  for (let note of notes) {
-    note[0] += amount
-  }
+  notes.forEach(note => { note[0] += amount })
   return notes
 }
 

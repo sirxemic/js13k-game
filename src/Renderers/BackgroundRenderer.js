@@ -87,8 +87,6 @@ export class BackgroundRenderer {
   render () {
     TheRenderer.drawRectangle(COLOR_BG_LAYER_1, 0, 0, TheCanvas.width, TheCanvas.height)
 
-    for (let layer of this.layers) {
-      layer.render()
-    }
+    this.layers.forEach(layer => layer.render())
   }
 }

@@ -134,30 +134,27 @@ export function bandPassFilter (buffer, frequencies, Q = Math.SQRT1_2) {
 }
 
 export function distort (buffer, amount) {
-  for (let j = 0; j < buffer.length; j++) {
-    buffer[j] *= amount
-    if (buffer[j] < -1) buffer[j] = -1
-    else if (buffer[j] > 1) buffer[j] = 1
-    else buffer[j] = Math.sin(buffer[j] * Math.PI / 2)
-    buffer[j] /= amount
+  for (let i = 0; i < buffer.length; i++) {
+    buffer[i] *= amount
+    if (buffer[i] < -1) buffer[i] = -1
+    else if (buffer[i] > 1) buffer[i] = 1
+    else buffer[i] = Math.sin(buffer[i] * Math.PI / 2)
+    buffer[i] /= amount
   }
   return buffer
 }
 
 function combineSounds (buffers, func) {
   let maxLength = 0
-  for (let buffer of buffers) {
-    maxLength = Math.max(maxLength, buffer.length)
-  }
+  buffers.forEach(buffer => { maxLength = Math.max(maxLength, buffer.length) })
 
   const outputBuffer = new Float32Array(maxLength)
 
-  for (let j = 0; j < buffers.length; j++) {
-    const buffer = buffers[j]
-    for (let k = 0; k < buffer.length; k++) {
-      func(outputBuffer, j, buffer, k, buffers.length)
+  buffers.forEach((buffer, j) => {
+    for (let i = 0; i < buffer.length; i++) {
+      func(outputBuffer, j, buffer, i, buffers.length)
     }
-  }
+  })
 
   return outputBuffer
 }
@@ -180,16 +177,16 @@ export function multiplySounds (buffers) {
 export function generateSound (length, sampleFunction) {
   const buffer = new Float32Array(length * TheAudioContext.sampleRate)
 
-  for (let j = 0; j < buffer.length; j++) {
-    buffer[j] = sampleFunction(j / buffer.length, j / TheAudioContext.sampleRate)
+  for (let i = 0; i < buffer.length; i++) {
+    buffer[i] = sampleFunction(i / buffer.length, i / TheAudioContext.sampleRate)
   }
 
   return buffer
 }
 
 export function applyEnvelope (buffer, envelope) {
-  for (let j = 0; j < buffer.length; j++) {
-    buffer[j] *= sampleEnvelope(j / buffer.length, envelope)
+  for (let i = 0; i < buffer.length; i++) {
+    buffer[i] *= sampleEnvelope(i / buffer.length, envelope)
   }
 
   return buffer
