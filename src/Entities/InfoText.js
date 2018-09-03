@@ -21,10 +21,10 @@ export class InfoText extends GridEntity {
   }
 
   async initialize () {
-    this.image = await getImage(this.text)
+    this.renderable = await getImage(this.text)
   }
 
   render () {
-    TheRenderer.drawImage(this.image, this.x, this.y)
+    TheRenderer.drawImage(this.renderable, this.x, this.y)
   }
 }

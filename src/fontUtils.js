@@ -32,7 +32,7 @@ export function drawText (ctx, text, x, y) {
       py += 6
     } else {
       let index = text.charCodeAt(i) - 65
-      ctx.drawImage(Font.image, index * 6, 0, 5, 5, px, py, 5, 5)
+      ctx.drawImage(Font.renderable, index * 6, 0, 5, 5, px, py, 5, 5)
       px += 6
     }
   }

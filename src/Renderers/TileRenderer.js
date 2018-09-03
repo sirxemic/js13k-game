@@ -17,7 +17,7 @@ export class TileRenderer {
   }
 
   async prerender () {
-    this.tiles.forEach((tile, x, y) => {
+    this.tiles.forEachTile((tile, x, y) => {
       let chunkX = Math.floor(x / CHUNK_TILE_COUNT)
       let chunkY = Math.floor(y / CHUNK_TILE_COUNT)
       let chunkKey = chunkX + ';' + chunkY
@@ -33,7 +33,7 @@ export class TileRenderer {
   }
 
   async prerenderChunk (chunk) {
-    chunk.image = await generateImage(CHUNK_TILE_COUNT * 8, CHUNK_TILE_COUNT * 8, ctx => {
+    chunk.renderable = await generateImage(CHUNK_TILE_COUNT * 8, CHUNK_TILE_COUNT * 8, ctx => {
       ctx.translate(-chunk.x * CHUNK_PIXEL_SIZE, -chunk.y * CHUNK_PIXEL_SIZE)
 
       chunk.tiles.forEach(tile => tile.render(this.tiles, ctx))
@@ -51,7 +51,7 @@ export class TileRenderer {
       if (chunk) {
         let x = xi * 8 * CHUNK_TILE_COUNT
         let y = yi * 8 * CHUNK_TILE_COUNT
-        TheRenderer.drawImage(chunk.image, x, y)
+        TheRenderer.drawImage(chunk.renderable, x, y)
       }
     })
   }

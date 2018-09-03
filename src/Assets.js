@@ -56,7 +56,7 @@ function augmentWithImage (spriteObject) {
   return new Promise((resolve) => {
     const img = new Image()
     img.onload = () => {
-      spriteObject.image = img
+      spriteObject.renderable = img
       resolve(spriteObject)
     }
     img.src = spriteObject.dataUrl

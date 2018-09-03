@@ -65,7 +65,7 @@ export const TheRenderer = {
       const frame = obj.frames[index]
 
       TheRenderer.drawImage(
-        obj.image,
+        obj.renderable,
         frame.x,
         frame.y,
         frame.w,

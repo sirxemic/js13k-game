@@ -3,12 +3,8 @@ export class Tileset {
     this.tiles = {}
   }
 
-  add (tile) {
+  addTile (tile) {
     this.tiles[tile.x + ';' + tile.y] = tile
-  }
-
-  delete (tile) {
-    delete this.tiles[tile.x + ';' + tile.y]
   }
 
   getTileAt (x, y, tags = 0) {
@@ -23,7 +19,7 @@ export class Tileset {
     return tile
   }
 
-  forEach (callback) {
+  forEachTile (callback) {
     for (let key in this.tiles) {
       let [x, y] = key.split(';').map(Number)
       callback(this.tiles[key], x, y)

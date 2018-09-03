@@ -3,6 +3,8 @@ import { TheGraphics, TheCanvas } from '../Graphics'
 import { TheRenderer } from '../Renderer'
 import { generateImage, forRectangularRegion, randomInt } from '../utils'
 
+const IMAGE_SIZE = 80
+
 class Layer {
   constructor (z, color) {
     this.z = z
@@ -24,14 +26,14 @@ class Layer {
   }
 
   async prerender () {
-    this.image = await generateImage(80, 80, ctx => {
+    this.renderable = await generateImage(IMAGE_SIZE, IMAGE_SIZE, ctx => {
       ctx.fillStyle = this.color
       ctx.beginPath()
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < IMAGE_SIZE; i++) {
         let w = 1 + randomInt(8)
         let h = 1 + randomInt(8)
-        let x = randomInt(80 - w)
-        let y = randomInt(80 - h)
+        let x = randomInt(IMAGE_SIZE - w)
+        let y = randomInt(IMAGE_SIZE - h)
         ctx.rect(x, y, w, h)
       }
       ctx.fill()
@@ -39,12 +41,12 @@ class Layer {
   }
 
   render () {
-    let { z, image, gradient } = this
+    let { z, renderable, gradient } = this
 
     TheRenderer.updateViewMatrix(z)
 
     let scale = z / 15
-    let imageSize = image.width * scale
+    let imageSize = IMAGE_SIZE * scale
 
     let bgLeft = -TheRenderer.viewMatrix[4] / TheRenderer.viewMatrix[0]
     let bgRight = TheCanvas.width / TheRenderer.viewMatrix[0] - TheRenderer.viewMatrix[4] / TheRenderer.viewMatrix[0]
@@ -58,7 +60,7 @@ class Layer {
 
     forRectangularRegion(xStart, yStart, xEnd, yEnd, (xi, yi) => {
       TheRenderer.drawImage(
-        image,
+        renderable,
         xi * imageSize,
         yi * imageSize,
         imageSize,

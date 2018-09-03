@@ -34,10 +34,7 @@ export class LevelLoaderDefault extends LevelLoaderBase {
   }
 
   generate () {
-    const levelData = levels[this.levelNumber]
-
-    const maps = levelData['maps']
-    const entities = levelData['entities']
+    const { maps, entities } = levels[this.levelNumber]
 
     for (let key in maps) {
       let entityType = {

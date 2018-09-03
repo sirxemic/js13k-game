@@ -46,7 +46,7 @@ export class World {
   updateDimensions () {
     this.width = 0
     this.height = 0
-    this.tiles.forEach(tile => {
+    this.tiles.forEachTile(tile => {
       this.width = Math.max(this.width, tile.x * 8)
       this.height = Math.max(this.height, tile.y * 8)
     })
@@ -94,7 +94,7 @@ export class World {
    * Tiles
    */
   addTile (tile) {
-    this.tiles.add(tile)
+    this.tiles.addTile(tile)
   }
 
   /**

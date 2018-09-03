@@ -40,11 +40,40 @@ const closureCompilerPlugin = {
   }
 }
 
+const transformConstToLet = {
+  transformBundle (code) {
+    return code.replace(/\bconst\b/g, 'let')
+  }
+}
+
+// Rename certain words and rewrite patterns which closure compiler usually doesn't mangle, such that
+// it actually does mangle them.
+const preMangle = {
+  transformBundle (code) {
+    code = code.replace(/"maps":/g, 'maps:')
+    code = code.replace(/"entities":/g, 'entities:')
+
+    for (let word of [
+      'frames',
+      'facing',
+      'detach',
+      'step',
+      'entities',
+      'maps'
+    ]) {
+      code = code.replace(new RegExp(`\\b${word}\\b`, 'g'), 'M' + word)
+    }
+    return code
+  }
+}
+
 const plugins = [
   rollupPluginJson(),
   rollupPluginUrl({
     limit: Infinity
   }),
+  transformConstToLet,
+  preMangle,
   closureCompilerPlugin
 ]
 

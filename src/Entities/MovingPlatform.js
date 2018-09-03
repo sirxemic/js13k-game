@@ -33,7 +33,7 @@ export class MovingPlatform extends GridEntity {
   }
 
   async initialize () {
-    this.image = await getImage(this.width, this.height)
+    this.renderable = await getImage(this.width, this.height)
   }
 
   step () {
@@ -118,6 +118,6 @@ export class MovingPlatform extends GridEntity {
   }
 
   render () {
-    TheRenderer.drawImage(this.image, this.x, this.y)
+    TheRenderer.drawImage(this.renderable, this.x, this.y)
   }
 }
