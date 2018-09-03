@@ -4,7 +4,7 @@ const tempfile = require('tempfile')
 const ClosureCompiler = require('google-closure-compiler').compiler
 const rollupPluginJson = require('rollup-plugin-json')
 const rollupPluginUrl = require('rollup-plugin-url')
-const JSZip = require('jszip')
+const childProcess = require('child_process')
 const minifyHtml = require('html-minifier').minify
 
 function asyncCompile (compiler) {
@@ -86,14 +86,24 @@ const outputOptions = {
   format: 'es'
 }
 
+function advZip () {
+  return new Promise((resolve, reject) => {
+    const command = `.\\bin\\advzip.exe -4 -a ./dist/dist.zip ./dist/index.html`
+
+    childProcess.exec(command, { cwd: __dirname }, (error, stdout, stderr) => {
+      if (error) {
+        return reject(stderr)
+      }
+      resolve(stdout)
+    })
+  })
+}
+
 async function build() {
   const bundle = await rollup.rollup(inputOptions)
-  const { code, map } = await bundle.generate(outputOptions)
+  const { code } = await bundle.generate(outputOptions)
 
-  const zip = new JSZip()
-  zip.file('build.js', code)
-
-  const minifiedHtml = minifyHtml(
+  let minifiedHtml = minifyHtml(
     fs.readFileSync('index.html', { encoding: 'utf-8' }),
     {
       collapseWhitespace: true,
@@ -102,22 +112,19 @@ async function build() {
     }
   )
 
-  zip.file('index.html', minifiedHtml)
-  const content = await zip.generateAsync({
-    type:'nodebuffer',
-    compression: 'DEFLATE',
-    compressionOptions: {
-      level: 9
-    }
-  })
-  if (!fs.existsSync('dist')) {
-    fs.mkdirSync('dist')
-  }
-  fs.writeFileSync('dist/dist.zip', content)
-  console.log('Final file size:', content.byteLength)
+  let newScriptTag = `<script>${code}</script>`
+  minifiedHtml = minifiedHtml.replace(/<script[^>]+><\/script>/, m => newScriptTag)
+
+  fs.writeFileSync('dist/index.html', minifiedHtml, { encoding: 'utf-8' })
+
+  await advZip()
+
+  const finalFileSize = fs.readFileSync('./dist/dist.zip').byteLength
+
+  console.log('Final file size:', finalFileSize)
   const limit = 13 * 1024
-  if (content.byteLength > limit) {
-    console.error(`That's ${content.byteLength - limit} too many bytes!`)
+  if (finalFileSize > limit) {
+    console.error(`That's ${finalFileSize - limit} too many bytes!`)
   }
 }
 
