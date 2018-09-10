@@ -1,6 +1,6 @@
-import { TILE_SIZE, COLOR_FG_LAYER } from '../constants'
-import { ThePlayer, TheWorld, deltaTime } from '../globals'
-import { overlapping, hexColorWithAlpha, generateImage, forRectangularRegion, sign } from '../utils'
+import { TILE_SIZE } from '../constants'
+import { ThePlayer, TheWorld, deltaTime, TheColorScheme } from '../globals'
+import { overlapping, generateImage, forRectangularRegion, sign, makeColorWithAlpha } from '../utils'
 import { TheRenderer } from '../Renderer'
 import { GridEntity } from './GridEntity'
 
@@ -10,7 +10,7 @@ async function getImage (width, height) {
   if (!imageCache[key]) {
     imageCache[key] = await generateImage(width, height, ctx => {
       forRectangularRegion(0, 0, width / TILE_SIZE - 1, height / TILE_SIZE - 1, (xi, yi) => {
-        ctx.fillStyle = hexColorWithAlpha(COLOR_FG_LAYER, 0.94 - 0.01 + Math.random() * 0.02)
+        ctx.fillStyle = makeColorWithAlpha(TheColorScheme.fg, 0.94 - 0.01 + Math.random() * 0.02)
         ctx.fillRect(xi * TILE_SIZE, yi * TILE_SIZE, TILE_SIZE, TILE_SIZE)
       })
     })

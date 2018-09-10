@@ -6,12 +6,6 @@ export const TAG_IS_SOLID = 1
 export const TAG_IS_DEATH = 2
 export const TAG_IS_COLLECTIBLE = 4
 
-// Colors
-export const COLOR_BG_LAYER_1 = '#eeeeee'
-export const COLOR_BG_LAYER_2 = '#b2b2b3'
-export const COLOR_BG_LAYER_3 = '#7b7681'
-export const COLOR_FG_LAYER = '#302234'
-
 // Input
 export const LEFT_DIRECTION = 1
 export const UP_DIRECTION = 2

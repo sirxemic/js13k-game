@@ -91,9 +91,9 @@ export async function generateImage (width, height, callback) {
  * Color utilities
  */
 
-export function hexColorWithAlpha (hexColor, alpha) {
-  alpha = (Math.round(255 * alpha) + 256).toString(16).substr(1)
-  return hexColor + alpha
+export function makeColorWithAlpha (color, alpha) {
+  let [_, type, args] = /^(\w+)\((.*)\)$/.exec(color)
+  return `${type}(${args},${alpha})`
 }
 
 /**

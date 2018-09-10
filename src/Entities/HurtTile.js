@@ -1,5 +1,6 @@
+import { TheColorScheme } from '../globals'
+import { TILE_SIZE, TAG_IS_SOLID, TAG_IS_DEATH } from '../constants'
 import { Tile } from './Tile'
-import { TILE_SIZE, TAG_IS_SOLID, TAG_IS_DEATH, COLOR_FG_LAYER } from '../constants'
 
 export class HurtTile extends Tile {
   constructor (x, y) {
@@ -39,7 +40,7 @@ export class HurtTile extends Tile {
   }
 
   render (tiles, ctx) {
-    ctx.fillStyle = COLOR_FG_LAYER
+    ctx.fillStyle = TheColorScheme.fg
 
     let x = this.x * TILE_SIZE
     let y = this.y * TILE_SIZE

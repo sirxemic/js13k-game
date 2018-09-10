@@ -1,4 +1,4 @@
-import { TheWorld, ThePlayer } from '../globals'
+import { TheWorld, setColorScheme } from '../globals'
 import {
   ENTITY_SERIALIZE_ID_SOLID_TILE,
   ENTITY_SERIALIZE_ID_HURT_TILE,
@@ -6,7 +6,6 @@ import {
   ENTITY_SERIALIZE_ID_MOVING_PLATFORM,
   ENTITY_SERIALIZE_ID_GOAL,
   ENTITY_SERIALIZE_ID_TEXT,
-  GAME_TITLE,
   FOREGROUND_LAYER,
   BACKGROUND_LAYER,
   ENTITY_SERIALIZE_ID_CHECKPOINT
@@ -35,6 +34,8 @@ export class LevelLoaderDefault extends LevelLoaderBase {
 
   generate () {
     const { maps, entities } = levels[this.levelNumber]
+
+    setColorScheme(this.levelNumber)
 
     for (let key in maps) {
       let entityType = {

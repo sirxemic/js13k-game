@@ -1,7 +1,7 @@
-import { COLOR_BG_LAYER_1, COLOR_BG_LAYER_2, COLOR_BG_LAYER_3 } from '../constants'
 import { TheGraphics, TheCanvas } from '../Graphics'
 import { TheRenderer } from '../Renderer'
-import { generateImage, forRectangularRegion, randomInt } from '../utils'
+import { generateImage, forRectangularRegion, randomInt, makeColorWithAlpha } from '../utils'
+import { TheColorScheme } from '../globals'
 
 const IMAGE_SIZE = 80
 
@@ -19,7 +19,7 @@ class Layer {
       1100
     )
 
-    gradient.addColorStop(0, color + '00')
+    gradient.addColorStop(0, makeColorWithAlpha(color, 0))
     gradient.addColorStop(1, color)
 
     this.gradient = gradient
@@ -77,15 +77,15 @@ class Layer {
 export class BackgroundRenderer {
   async prerender () {
     this.layers = [
-      new Layer(900, COLOR_BG_LAYER_2),
-      new Layer(300, COLOR_BG_LAYER_3)
+      new Layer(900, TheColorScheme.bg2),
+      new Layer(300, TheColorScheme.bg3)
     ]
 
     await Promise.all(this.layers.map(layer => layer.prerender()))
   }
 
   render () {
-    TheRenderer.drawRectangle(COLOR_BG_LAYER_1, 0, 0, TheCanvas.width, TheCanvas.height)
+    TheRenderer.drawRectangle(TheColorScheme.bg1, 0, 0, TheCanvas.width, TheCanvas.height)
 
     this.layers.forEach(layer => layer.render())
   }

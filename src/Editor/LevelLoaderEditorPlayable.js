@@ -1,4 +1,4 @@
-import { TheWorld } from '../globals'
+import { TheWorld, setColorScheme } from '../globals'
 import { LevelLoaderBase } from '../LevelLoaders/LevelLoaderBase'
 
 import { PlayerStart } from './Entities/PlayerStart'
@@ -29,8 +29,11 @@ export class LevelLoaderEditorPlayable extends LevelLoaderBase {
   }
 
   generate () {
+    setColorScheme(this.editorWorld.levelNumber)
+
     let minX = Infinity
     let minY = Infinity
+
     this.editorWorld.forEachEntity(entity => {
       minX = Math.min(entity.x, minX)
       minY = Math.min(entity.y, minY)
