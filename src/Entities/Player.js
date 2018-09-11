@@ -523,7 +523,7 @@ export class Player extends GridEntity {
         return
       }
 
-      this.stopHorizontalMovement(false)
+      this.reduceHorizontalMovement(collider.xSpeed)
     }
 
     let stopY = (collider) => {
@@ -532,7 +532,7 @@ export class Player extends GridEntity {
         return
       }
 
-      this.stopVerticalMovement(true)
+      this.reduceVerticalMovement(collider.ySpeed)
     }
 
     if (Math.abs(dx) > Math.abs(dy)) {
@@ -543,18 +543,22 @@ export class Player extends GridEntity {
       this.moveX(dx, stopX)
     }
   }
+  reduceHorizontalMovement (colliderXSpeed = 0) {
+    let targetSpeed = sign(colliderXSpeed) === sign(this.xSpeed) ? colliderXSpeed : 0
+    let impact = Math.abs(targetSpeed - Math.abs(this.xSpeed))
+    this.xSpeed = targetSpeed
 
-  stopHorizontalMovement () {
-    if (Math.abs(this.xSpeed) >= 200) {
+    if (impact >= 200) {
       this.showImpactFeedback()
+      this.movementFSM.cancelDash(this, getDashDirection(1, 0, 1, 0))
     }
-
-    this.xSpeed = 0
-    this.movementFSM.cancelDash(this, getDashDirection(1, 0, 1, 0))
   }
 
-  stopVerticalMovement () {
-    if (this.ySpeed >= 230 || this.ySpeed < -200) {
+  reduceVerticalMovement (colliderYSpeed = 0) {
+    let targetSpeed = sign(colliderYSpeed) === sign(this.ySpeed) ? colliderYSpeed : 0
+    let impact = Math.abs(targetSpeed - Math.abs(this.ySpeed))
+
+    if (impact >= 230 || this.ySpeed < -200) {
       this.showImpactFeedback()
 
       // Show some dust
@@ -563,12 +567,14 @@ export class Player extends GridEntity {
       }
 
       // Freeze the world for a few frames
-      TheWorld.delay = Math.abs(this.ySpeed) == 320 ? 2 : 1
+      TheWorld.delay = Math.abs(this.ySpeed) == MAX_FALLING_SPEED ? 2 : 1
+
+      this.jumpTimer = 0
+
+      this.movementFSM.cancelDash(this, getDashDirection(0, 1, 0, 1))
     }
 
-    this.jumpTimer = 0
-    this.ySpeed = 0
-    this.movementFSM.cancelDash(this, getDashDirection(0, 1, 0, 1))
+    this.ySpeed = targetSpeed
   }
 
   showImpactFeedback () {

@@ -6,7 +6,8 @@ import {
   ENTITY_SERIALIZE_ID_MOVING_PLATFORM,
   ENTITY_SERIALIZE_ID_GOAL,
   ENTITY_SERIALIZE_ID_TEXT,
-  ENTITY_SERIALIZE_ID_CHECKPOINT
+  ENTITY_SERIALIZE_ID_CHECKPOINT,
+  ENTITY_SERIALIZE_ID_FADE_BLOCK
 } from '../constants'
 
 import { makeRectangleCollection } from './SerializerUtils'
@@ -17,7 +18,8 @@ import { PlayerStart } from './Entities/PlayerStart'
 import { EditorMovingPlatform } from './Entities/EditorMovingPlatform'
 import { EditorGoal } from './Entities/EditorGoal'
 import { EditorText } from './Entities/EditorText'
-import { EditorCheckpoint } from './Entities/EditorCheckpoint';
+import { EditorCheckpoint } from './Entities/EditorCheckpoint'
+import { EditorFadeBlock } from './Entities/EditorFadeBlock'
 
 export class LevelSerializer {
   constructor () {}
@@ -48,6 +50,9 @@ export class LevelSerializer {
       }
       if (entity instanceof EditorMovingPlatform) {
         entities.push([ENTITY_SERIALIZE_ID_MOVING_PLATFORM, x, y, entity.width, entity.height, entity.xSpeed, entity.ySpeed])
+      }
+      if (entity instanceof EditorFadeBlock) {
+        entities.push([ENTITY_SERIALIZE_ID_FADE_BLOCK, x, y, entity.width, entity.height])
       }
       if (entity instanceof EditorGoal) {
         entities.push([ENTITY_SERIALIZE_ID_GOAL, x, y])

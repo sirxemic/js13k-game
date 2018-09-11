@@ -18,7 +18,8 @@ import {
   ENTITY_SERIALIZE_ID_MOVING_PLATFORM,
   ENTITY_SERIALIZE_ID_GOAL,
   ENTITY_SERIALIZE_ID_TEXT,
-  ENTITY_SERIALIZE_ID_CHECKPOINT
+  ENTITY_SERIALIZE_ID_CHECKPOINT,
+  ENTITY_SERIALIZE_ID_FADE_BLOCK
 } from '../constants'
 import { LevelLoaderEditorPlayable } from './LevelLoaderEditorPlayable'
 import { LevelSerializer } from './LevelSerializer'
@@ -28,14 +29,16 @@ import { EditorText } from './Entities/EditorText'
 import { levels } from '../Assets/levels'
 import { forRectangularRegion } from '../utils'
 import { EditorCheckpoint } from './Entities/EditorCheckpoint'
+import { EditorFadeBlock } from './Entities/EditorFadeBlock'
 
-const DRAW_SOLID = 1
-const DRAW_DEATH = 2
-const DRAW_PLAYER = 3
-const DRAW_MOVING_PLATFORM = 4
-const DRAW_GOAL = 5
-const DRAW_TEXT = 6
-const DRAW_CHECKPOINT = 7
+const DRAW_SOLID = '1'
+const DRAW_DEATH = '2'
+const DRAW_PLAYER = '3'
+const DRAW_MOVING_PLATFORM = '4'
+const DRAW_FADE_BLOCK = '5'
+const DRAW_GOAL = '6'
+const DRAW_TEXT = '7'
+const DRAW_CHECKPOINT = '8'
 
 function copyToClipboard (str) {
   const el = document.createElement('textarea')
@@ -98,6 +101,9 @@ export class EditorController {
         case ENTITY_SERIALIZE_ID_MOVING_PLATFORM:
           TheWorld.addEntity(new EditorMovingPlatform(...args))
           break
+        case ENTITY_SERIALIZE_ID_FADE_BLOCK:
+          TheWorld.addEntity(new EditorFadeBlock(...args))
+          break
         case ENTITY_SERIALIZE_ID_TEXT:
           TheWorld.addEntity(new EditorText(...args))
           break
@@ -130,7 +136,8 @@ export class EditorController {
       .replace(/!/g, '[')
       .replace(/\./g, '\\')
       .replace(/,/g, ']')
-      .replace(/[^A-Z\\[\] \n#]/g, '')
+      .replace(/\?/g, '^')
+      .replace(/[^A-Z^\\[\] \n#]/g, '')
 
     if (text.length === 0) {
       return
@@ -187,32 +194,25 @@ export class EditorController {
     TheWorld.addEntity(new EditorMovingPlatform(x0, y0, x1 - x0 + 1, y1 - y0 + 1, 60, 0))
   }
 
+  addFadeBlock (x0, y0, x1, y1) {
+    TheWorld.addEntity(new EditorFadeBlock(x0, y0, x1 - x0 + 1, y1 - y0 + 1))
+  }
+
   addCheckpoint (x, y) {
     TheWorld.addEntity(new EditorCheckpoint(x, y))
   }
 
   handleKeyDown (event) {
     switch (event.key) {
-      case '1':
-        this.mode = DRAW_SOLID
-        break
-      case '2':
-        this.mode = DRAW_DEATH
-        break
-      case '3':
-        this.mode = DRAW_MOVING_PLATFORM
-        break
-      case '4':
-        this.mode = DRAW_GOAL
-        break
-      case '5':
-        this.mode = DRAW_PLAYER
-        break
-      case '6':
-        this.mode = DRAW_TEXT
-        break
-      case '7':
-        this.mode = DRAW_CHECKPOINT
+      case DRAW_SOLID:
+      case DRAW_DEATH:
+      case DRAW_PLAYER:
+      case DRAW_MOVING_PLATFORM:
+      case DRAW_FADE_BLOCK:
+      case DRAW_GOAL:
+      case DRAW_TEXT:
+      case DRAW_CHECKPOINT:
+        this.mode = event.key
         break
       case 'c':
         if (event.ctrlKey) {
@@ -250,6 +250,9 @@ export class EditorController {
           break
         case DRAW_MOVING_PLATFORM:
           this.currentBrush = new RectangleBrush(this.addOrUpdateMovingPlatform.bind(this))
+          break
+        case DRAW_FADE_BLOCK:
+          this.currentBrush = new RectangleBrush(this.addFadeBlock.bind(this))
           break
         case DRAW_TEXT:
           this.currentBrush = new LineBrush(this.drawInfoText.bind(this))
@@ -304,6 +307,7 @@ export class EditorController {
       [DRAW_PLAYER]: 'player',
       [DRAW_GOAL]: 'goal',
       [DRAW_MOVING_PLATFORM]: 'moving platform',
+      [DRAW_FADE_BLOCK]: 'fade block',
       [DRAW_TEXT]: 'text',
       [DRAW_CHECKPOINT]: 'checkpoint',
     }[this.mode]

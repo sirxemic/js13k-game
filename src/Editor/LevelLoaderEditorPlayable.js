@@ -20,6 +20,8 @@ import { BACKGROUND_LAYER, FOREGROUND_LAYER } from '../constants'
 import { MainTitle } from '../Entities/MainTitle'
 import { FinishAnimation } from '../Entities/FinishAnimation'
 import { levels } from '../Assets/levels'
+import { EditorFadeBlock } from './Entities/EditorFadeBlock'
+import { FadeBlock } from '../Entities/FadeBlock'
 
 export class LevelLoaderEditorPlayable extends LevelLoaderBase {
   constructor (editorWorld) {
@@ -53,6 +55,9 @@ export class LevelLoaderEditorPlayable extends LevelLoaderBase {
       }
       if (entity instanceof EditorMovingPlatform) {
         TheWorld.addSolidEntity(new MovingPlatform(x, y, entity.width, entity.height, entity.xSpeed, entity.ySpeed))
+      }
+      if (entity instanceof EditorFadeBlock) {
+        TheWorld.addSolidEntity(new FadeBlock(x, y, entity.width, entity.height))
       }
       if (entity instanceof EditorGoal) {
         TheWorld.addEntity(new Goal(x, y))

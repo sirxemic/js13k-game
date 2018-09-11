@@ -1,5 +1,5 @@
 import { TILE_SIZE } from './constants'
-import { frame } from './globals'
+import { frame, TheColorScheme } from './globals'
 
 /**
  * Some mathematical utilities
@@ -85,6 +85,11 @@ export async function generateImage (width, height, callback) {
     img.onload = () => resolve(img)
     img.src = URL.createObjectURL(blob)
   })
+}
+
+export function renderSolidSquare (ctx, x, y) {
+  ctx.fillStyle = makeColorWithAlpha(TheColorScheme.fg, 0.94 - 0.01 + Math.random() * 0.02)
+  ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
 }
 
 /**

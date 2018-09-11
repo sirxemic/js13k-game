@@ -8,7 +8,8 @@ import {
   ENTITY_SERIALIZE_ID_TEXT,
   FOREGROUND_LAYER,
   BACKGROUND_LAYER,
-  ENTITY_SERIALIZE_ID_CHECKPOINT
+  ENTITY_SERIALIZE_ID_CHECKPOINT,
+  ENTITY_SERIALIZE_ID_FADE_BLOCK
 } from '../constants'
 import { forRectangularRegion } from '../utils'
 
@@ -23,8 +24,9 @@ import { InfoText } from '../Entities/InfoText'
 import { FinishAnimation } from '../Entities/FinishAnimation'
 
 import { levels } from '../Assets/levels'
-import { MainTitle } from '../Entities/MainTitle';
-import { Checkpoint } from '../Entities/Checkpoint';
+import { MainTitle } from '../Entities/MainTitle'
+import { Checkpoint } from '../Entities/Checkpoint'
+import { FadeBlock } from '../Entities/FadeBlock'
 
 export class LevelLoaderDefault extends LevelLoaderBase {
   constructor (levelNumber) {
@@ -55,6 +57,9 @@ export class LevelLoaderDefault extends LevelLoaderBase {
           break
         case ENTITY_SERIALIZE_ID_MOVING_PLATFORM:
           TheWorld.addSolidEntity(new MovingPlatform(...args))
+          break
+        case ENTITY_SERIALIZE_ID_FADE_BLOCK:
+          TheWorld.addSolidEntity(new FadeBlock(...args))
           break
         case ENTITY_SERIALIZE_ID_GOAL:
           TheWorld.addEntity(new Goal(...args))

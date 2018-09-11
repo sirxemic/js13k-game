@@ -60,6 +60,11 @@ export class World {
   }
 
   respawnPlayer () {
+    for (let entity of this.entities) {
+      if (entity.reset) {
+        entity.reset()
+      }
+    }
     setThePlayer(new Player(this.playerSpawnX, this.playerSpawnY))
   }
 

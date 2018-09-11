@@ -1,30 +1,30 @@
 import { TILE_SIZE } from '../constants'
-import { ThePlayer, TheWorld, deltaTime, TheColorScheme } from '../globals'
-import { overlapping, generateImage, forRectangularRegion, sign, makeColorWithAlpha } from '../utils'
+import { ThePlayer, TheWorld, deltaTime } from '../globals'
+import { overlapping, generateImage, forRectangularRegion, sign, renderSolidSquare } from '../utils'
 import { TheRenderer } from '../Renderer'
 import { GridEntity } from './GridEntity'
-
-let imageCache = {}
-async function getImage (width, height) {
-  let key = width + ';' + height
-  if (!imageCache[key]) {
-    imageCache[key] = await generateImage(width, height, ctx => {
-      forRectangularRegion(0, 0, width / TILE_SIZE - 1, height / TILE_SIZE - 1, (xi, yi) => {
-        ctx.fillStyle = makeColorWithAlpha(TheColorScheme.fg, 0.94 - 0.01 + Math.random() * 0.02)
-        ctx.fillRect(xi * TILE_SIZE, yi * TILE_SIZE, TILE_SIZE, TILE_SIZE)
-      })
-    })
-  }
-
-  return imageCache[key]
-}
 
 export class MovingPlatform extends GridEntity {
   constructor (x, y, width, height, xSpeed, ySpeed) {
     super(x, y, width, height)
 
-    this.xSpeed = xSpeed
-    this.ySpeed = ySpeed
+    this.startX = this.x
+    this.startY = this.y
+
+    this.startXSpeed = xSpeed
+    this.startYSpeed = ySpeed
+
+    this.reset()
+
+    this.collidable = true
+  }
+
+  reset () {
+    this.x = this.startX
+    this.y = this.startY
+
+    this.xSpeed = this.startXSpeed
+    this.ySpeed = this.startYSpeed
 
     this.xRemainder = 0
     this.yRemainder = 0
@@ -33,7 +33,11 @@ export class MovingPlatform extends GridEntity {
   }
 
   async initialize () {
-    this.renderable = await getImage(this.width, this.height)
+    this.renderable = await generateImage(this.width, this.height, ctx => {
+      forRectangularRegion(0, 0, this.width / TILE_SIZE - 1, this.height / TILE_SIZE - 1, (x, y) => {
+        renderSolidSquare(ctx, x, y)
+      })
+    })
   }
 
   step () {
@@ -83,7 +87,9 @@ export class MovingPlatform extends GridEntity {
     // Actually moving the player
     if (ThePlayer.isAlive) {
       if (playerIsRiding) {
-        ThePlayer.move(dx, dy)
+        // If the player is dashing we don't have to move the player down when going down
+        let moveY = dy < 0 || !ThePlayer.isDashing() ? dy : 0
+        ThePlayer.move(dx, moveY)
       } else {
         const overlappingPlayer = overlapping(
           ThePlayer.boundingBox,
