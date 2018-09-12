@@ -10,8 +10,8 @@ export class MainTitle {
   }
 
   initialize () {
-    this.text.x = ThePlayer.x - 30
-    this.text.y = ThePlayer.y - 10
+    this.text.x = ThePlayer.x - 48
+    this.text.y = ThePlayer.y - 30
 
     return this.text.initialize()
   }
