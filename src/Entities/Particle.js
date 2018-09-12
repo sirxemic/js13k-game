@@ -20,8 +20,8 @@ export class Particle {
   }
 
   render () {
-    TheGraphics.globalAlpha = 0.5 * this.timer
+    TheRenderer.setAlpha(0.5 * this.timer)
     TheRenderer.drawSprite(ParticlesSprite, this.x, this.y, this.spriteIndex)
-    TheGraphics.globalAlpha = 1
+    TheRenderer.resetAlpha()
   }
 }

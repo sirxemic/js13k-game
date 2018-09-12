@@ -73,7 +73,7 @@ export class Goal extends GridEntity {
     let centerX = this.x + TILE_SIZE / 2
     let centerY = this.y + TILE_SIZE / 2
 
-    if (distanceSquared(centerX, centerY, playerX, playerY) < GOAL_RADIUS * GOAL_RADIUS && (ThePlayer.isDashing() || ThePlayer.ySpeed > 240)) {
+    if (distanceSquared(centerX, centerY, playerX, playerY) < GOAL_RADIUS * GOAL_RADIUS && (ThePlayer.isDashing || ThePlayer.ySpeed > 240)) {
       ThePlayer.setFinished()
     }
 
@@ -83,7 +83,8 @@ export class Goal extends GridEntity {
   }
 
   render () {
-    TheGraphics.globalAlpha = this.alpha
+    TheRenderer.setAlpha(this.alpha)
+
     for (let i = 0; i < NUM_POINTS; i++) {
       let point = this.points[i]
 
@@ -100,6 +101,6 @@ export class Goal extends GridEntity {
         2
       )
     }
-    TheGraphics.globalAlpha = 1
+    TheRenderer.resetAlpha()
   }
 }

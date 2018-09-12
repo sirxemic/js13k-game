@@ -18,7 +18,7 @@ class WingFSM extends FSM {
       {
         [STATE_DETACHED]: {
           execute: () => {
-            this.opacity = 0
+            this.alpha = 0
           }
         },
 
@@ -46,7 +46,7 @@ class WingFSM extends FSM {
 
             wing.x = wing.xFrom + (xTo - wing.xFrom) * alpha
             wing.y = wing.yFrom + (yTo - wing.yFrom) * alpha
-            wing.opacity = alpha
+            wing.alpha = alpha
 
             if (this.timer >= duration) {
               this.setState(STATE_ATTACHED)
@@ -91,9 +91,9 @@ class WingFSM extends FSM {
             wing.x += this.xSpeed * deltaTime
             wing.y += this.ySpeed * deltaTime
             wing.rotation += this.rotationSpeed * deltaTime
-            wing.opacity = approach(wing.opacity, 0, 2 * deltaTime)
+            wing.alpha = approach(wing.alpha, 0, 2 * deltaTime)
 
-            if (wing.opacity <= 0) {
+            if (wing.alpha <= 0) {
               this.setState(STATE_DETACHED)
             }
           }
@@ -113,7 +113,7 @@ class Wing {
 
     this.xOff = -2 * facing
     this.yOff = -6
-    this.opacity = 0
+    this.alpha = 0
 
     this.fsm = new WingFSM(this)
   }
@@ -146,13 +146,13 @@ class Wing {
   }
 
   render () {
-    if (this.opacity <= 0) {
+    if (this.alpha <= 0) {
       return
     }
 
-    TheGraphics.globalAlpha  = this.opacity
+    TheRenderer.setAlpha(this.alpha)
     TheRenderer.drawSprite(WingSprite, this.x, this.y, 0, this.facing, 1, this.rotation)
-    TheGraphics.globalAlpha  = 1
+    TheRenderer.resetAlpha()
   }
 }
 

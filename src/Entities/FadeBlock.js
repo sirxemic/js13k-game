@@ -6,7 +6,7 @@ import { GridEntity } from './GridEntity'
 import { TheGraphics } from '../Graphics'
 
 const ANIMATION_DURATION = 0.2
-const RESPAWN_WAITING_DURATION = 8
+const RESPAWN_WAITING_DURATION = 15
 
 export class FadeBlock extends GridEntity {
   constructor (x, y, width, height) {
@@ -83,8 +83,8 @@ export class FadeBlock extends GridEntity {
     let renderHeight = this.height * vScale
     let left = this.x + (this.width - renderWidth) / 2
     let top = this.y + (this.height - renderHeight) / 2
-    TheGraphics.globalAlpha = (alpha + 1) / 2
+    TheRenderer.setAlpha((alpha + 1) / 2)
     TheRenderer.drawImage(this.renderable, left, top, renderWidth, renderHeight)
-    TheGraphics.globalAlpha = 1
+    TheRenderer.resetAlpha()
   }
 }

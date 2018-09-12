@@ -167,7 +167,7 @@ class WalkingDashingFSM extends FSM {
               player.resetGravity()
             }
 
-            if (player.boostModeActive()) {
+            if (player.boostModeActive) {
               if (!this.handleDashInput(player)) {
                 player.handleNormalControls()
               }
@@ -221,7 +221,7 @@ class WalkingDashingFSM extends FSM {
 
           execute: () => {
             // If we can dash...
-            if (player.boostModeActive() && this.airDashCount === 0) {
+            if (player.boostModeActive && this.airDashCount === 0) {
               // And pressed dash, we can immediately go back to DASHING state
               if (this.handleDashInput(player)) {
                 return
@@ -495,7 +495,7 @@ export class Player extends GridEntity {
       this.xSpeed = approach(this.xSpeed, targetSpeed, 4 * multiplier * RUN_ACCELERATION * deltaTime)
     }
 
-    if (!this.boostModeActive() && this.groundedTimer.isActive() && this.jumpInputTimer.isActive()) {
+    if (!this.boostModeActive && this.groundedTimer.isActive() && this.jumpInputTimer.isActive()) {
       this.ySpeed = -JUMP_SPEED
       this.jumpTimer = JUMP_FIRST_PHASE_DURATION
       this.jumpInputTimer.stop()
@@ -596,7 +596,7 @@ export class Player extends GridEntity {
 
   moveX (amount, onCollide) {
     this.xRemainder += amount
-    let move = 0 | Math.round(this.xRemainder)
+    let move = Math.round(this.xRemainder)
 
     if (move !== 0) {
       this.xRemainder -= move
@@ -618,7 +618,7 @@ export class Player extends GridEntity {
 
   moveY (amount, onCollide) {
     this.yRemainder += amount
-    let move = 0 | Math.round(this.yRemainder)
+    let move = Math.round(this.yRemainder)
 
     if (move !== 0) {
       this.yRemainder -= move
@@ -668,11 +668,11 @@ export class Player extends GridEntity {
     }
   }
 
-  boostModeActive () {
+  get boostModeActive () {
     return this.boostModeFSM.activeState === STATE_ON
   }
 
-  isDashing () {
+  get isDashing () {
     return this.movementFSM.activeState === STATE_DASHING
   }
 

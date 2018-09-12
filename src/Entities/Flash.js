@@ -27,8 +27,8 @@ export class Flash {
   }
 
   render () {
-    TheGraphics.globalAlpha = this.alpha
+    TheRenderer.setAlpha(this.alpha)
     TheRenderer.drawRectangle(dashGradient, 0, 0, TheCanvas.width, TheCanvas.height)
-    TheGraphics.globalAlpha = 1
+    TheRenderer.resetAlpha()
   }
 }

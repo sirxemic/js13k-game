@@ -1,5 +1,5 @@
-import { deltaTime, TheWorld } from '../globals'
-import { TheGraphics, TheCanvas } from '../Graphics'
+import { deltaTime } from '../globals'
+import { TheCanvas } from '../Graphics'
 import { TheRenderer } from '../Renderer'
 import { approach } from '../utils'
 
@@ -21,8 +21,8 @@ export class Fade {
   }
 
   render () {
-    TheGraphics.globalAlpha = this.alpha
+    TheRenderer.setAlpha(this.alpha)
     TheRenderer.drawRectangle(this.color, 0, 0, TheCanvas.width, TheCanvas.height)
-    TheGraphics.globalAlpha = 1
+    TheRenderer.resetAlpha()
   }
 }

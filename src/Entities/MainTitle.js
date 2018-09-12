@@ -19,9 +19,9 @@ export class MainTitle {
   step () {}
 
   render () {
-    TheGraphics.globalAlpha = 1 - (1 - TheCamera.introZoomFactor) * (1 - TheCamera.introZoomFactor)
+    TheRenderer.setAlpha(1 - (1 - TheCamera.introZoomFactor) * (1 - TheCamera.introZoomFactor))
     TheRenderer.drawRectangle(TheColorScheme.bg1, TheCamera.x - 300, TheCamera.y - 300, 600, 600)
     this.text.render()
-    TheGraphics.globalAlpha = 1
+    TheRenderer.resetAlpha()
   }
 }

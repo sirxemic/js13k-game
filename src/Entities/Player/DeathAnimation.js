@@ -24,9 +24,9 @@ class ExplosionCircle {
     }
 
     TheRenderer.drawCircle(this.color, null, this.x, this.y, this.radius)
-    TheGraphics.globalAlpha = this.alpha
+    TheRenderer.setAlpha(this.alpha)
     TheRenderer.drawCircle('#888', null, this.x, this.y, this.radius)
-    TheGraphics.globalAlpha = 1
+    TheRenderer.resetAlpha()
   }
 }
 

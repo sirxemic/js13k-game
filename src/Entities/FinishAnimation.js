@@ -14,7 +14,7 @@ class Flower {
   }
 
   render () {
-    TheGraphics.globalAlpha = this.alpha
+    TheRenderer.setAlpha(this.alpha)
     this.alpha += 0.1
     TheRenderer.drawSprite(FlowersSprite, this.x, this.y, this.index)
   }
@@ -66,7 +66,7 @@ export class FinishAnimation {
 
   render () {
     this.flowers.forEach(flower => flower.render())
-    TheGraphics.globalAlpha = 1
+    TheRenderer.resetAlpha()
     TheGraphics.lineWidth = 1
     TheRenderer.drawCircle(null, '#fff', this.centerX, this.centerY, Math.pow(this.timer, 1.125))
     TheRenderer.drawCircle(null, '#fff', this.centerX, this.centerY, Math.pow(this.timer, 1.25))

@@ -88,8 +88,8 @@ export class MovingPlatform extends GridEntity {
     if (ThePlayer.isAlive) {
       if (playerIsRiding) {
         // If the player is dashing we don't have to move the player down when going down
-        let moveY = dy < 0 || !ThePlayer.isDashing() ? dy : 0
-        ThePlayer.move(dx, moveY)
+        let newDy = dy < 0 || !ThePlayer.isDashing ? dy : 0
+        ThePlayer.move(dx, newDy)
       } else {
         const overlappingPlayer = overlapping(
           ThePlayer.boundingBox,

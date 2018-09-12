@@ -33,6 +33,14 @@ export const TheRenderer = {
     TheGraphics.setTransform(...TheRenderer.viewMatrix)
   },
 
+  setAlpha (alpha) {
+    TheGraphics.globalAlpha = alpha
+  },
+
+  resetAlpha () {
+    TheGraphics.globalAlpha = 1
+  },
+
   drawImage (...args) {
     incrementDrawCallCount()
     TheGraphics.drawImage(...args)
