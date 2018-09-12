@@ -73,7 +73,7 @@ export class Goal extends GridEntity {
     let centerX = this.x + TILE_SIZE / 2
     let centerY = this.y + TILE_SIZE / 2
 
-    if (distanceSquared(centerX, centerY, playerX, playerY) < GOAL_RADIUS * GOAL_RADIUS && (ThePlayer.isDashing || ThePlayer.ySpeed > 240)) {
+    if (distanceSquared(centerX, centerY, playerX, playerY) < GOAL_RADIUS * GOAL_RADIUS && (ThePlayer.isDashing || ThePlayer.ySpeed >= 260)) {
       ThePlayer.setFinished()
     }
 

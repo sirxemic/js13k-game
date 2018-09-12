@@ -77,7 +77,7 @@ export class FadeBlock extends GridEntity {
       return
     }
 
-    let hScale = 2 - alpha
+    let hScale = 1
     let vScale = alpha
     let renderWidth = this.width * hScale
     let renderHeight = this.height * vScale
