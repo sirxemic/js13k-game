@@ -86,9 +86,22 @@ const outputOptions = {
   format: 'es'
 }
 
-function advZip () {
+function advZipWindows () {
   return new Promise((resolve, reject) => {
     const command = `.\\bin\\advzip.exe -4 -a ./dist/dist.zip ./dist/index.html`
+
+    childProcess.exec(command, { cwd: __dirname }, (error, stdout, stderr) => {
+      if (error) {
+        return reject(stderr)
+      }
+      resolve(stdout)
+    })
+  })
+}
+
+function advZipFallback () {
+  return new Promise((resolve, reject) => {
+    const command = `advzip -4 -a ./dist/dist.zip ./dist/index.html`
 
     childProcess.exec(command, { cwd: __dirname }, (error, stdout, stderr) => {
       if (error) {
@@ -117,7 +130,16 @@ async function build() {
 
   fs.writeFileSync('dist/index.html', minifiedHtml, { encoding: 'utf-8' })
 
-  await advZip()
+  try {
+    await advZipWindows()
+  } catch (e) {
+    try {
+      await advZipFallback()
+    } catch (e) {
+      console.log('Could not zip index.html using advzip. Does the advzip binary even exist?')
+      return
+    }
+  }
 
   const finalFileSize = fs.readFileSync('./dist/dist.zip').byteLength
 
