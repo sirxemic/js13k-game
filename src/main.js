@@ -10,8 +10,6 @@ function tick () {
     return
   }
 
-  Input.preUpdate()
-
   step()
 
   Input.postUpdate()

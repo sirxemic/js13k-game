@@ -43,7 +43,7 @@ import { GridEntity } from './GridEntity'
 
 class InputTimer {
   constructor () {
-    this.active = false
+    // this.active = false // commented out to save bytes (interpret undefined as false)
   }
 
   start (count) {
@@ -311,11 +311,11 @@ export class Player extends GridEntity {
     this.xSpeed = 0
     this.ySpeed = 0
 
-    this.grounded = false
+    // this.grounded = false // commented out to save bytes (interpret undefined as false)
     this.jumpTimer = 0
 
     this.isAlive = true
-    this.finishedLevel = false
+    // this.finishedLevel = false // commented out to save bytes (interpret undefined as false)
     this.slowDownFactor = 0.5
 
     this.xRemainder = 0

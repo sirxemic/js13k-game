@@ -35,7 +35,7 @@ export function setTheEditorLevel (level) {
 }
 
 export function setColorScheme (levelNumber) {
-  let hue = (240 + levelNumber * 50) % 360
+  let hue = (240 + levelNumber * 70) % 360
 
   let makeColor = (h, s, l) => `hsl(${h}, ${s}%, ${l}%)`
 

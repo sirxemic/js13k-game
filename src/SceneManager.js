@@ -2,9 +2,9 @@ import { LevelLoaderDefault } from './LevelLoaders/LevelLoaderDefault'
 
 export class SceneManager {
   constructor () {
-    this.currentLoader = null
-    this.nextLoader = null
-    this.loading = false
+    // this.currentLoader = null // commented out to save bytes (interpret undefined as null)
+    // this.nextLoader = null // commented out to save bytes (interpret undefined as null)
+    // this.loading = false // commented out to save bytes (interpret undefined as false)
   }
 
   step () {

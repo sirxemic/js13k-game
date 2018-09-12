@@ -10,11 +10,6 @@ import {
 export let Input = {
   current: {},
   previous: {},
-  gamepad: null,
-
-  isPressed (button) {
-    return Input.gamepad.buttons[button].pressed
-  },
 
   getKey (input) {
     return !!Input.current[input]
@@ -26,25 +21,6 @@ export let Input = {
 
   getKeyUp (input) {
     return !Input.current[input] && !!Input.previous[input]
-  },
-
-  preUpdate () {
-    if (Input.gamepad) {
-
-      Input.current[LEFT_DIRECTION] = Input.gamepad.axes[0] < -0.3 || Input.isPressed(14)
-      Input.current[RIGHT_DIRECTION] = Input.gamepad.axes[0] > 0.3 || Input.isPressed(15)
-      Input.current[UP_DIRECTION] = Input.gamepad.axes[1] < -0.3 || Input.isPressed(12)
-      Input.current[DOWN_DIRECTION] = Input.gamepad.axes[1] > 0.3 || Input.isPressed(13)
-      Input.current[BOOST_TOGGLE] = (
-        Input.isPressed(2) ||
-        Input.isPressed(3) ||
-        Input.isPressed(4) ||
-        Input.isPressed(5) ||
-        Input.isPressed(6) ||
-        Input.isPressed(7)
-      )
-      Input.current[JUMP_OR_DASH] = Input.isPressed(0) || Input.isPressed(1)
-    }
   },
 
   postUpdate () {
@@ -88,10 +64,3 @@ document.addEventListener('keyup', ({ keyCode }) => {
   Input.previous[input] = Input.current[input]
   Input.current[input] = false
 }, false)
-
-window.addEventListener('gamepadconnected', event => {
-  if (!Input.gamepad) {
-    // Closure Compiler would rename the property if we don't set it like this
-    Input.gamepad = event['gamepad']
-  }
-})
